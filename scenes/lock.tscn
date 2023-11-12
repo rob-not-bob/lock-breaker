@@ -1,0 +1,179 @@
+[gd_scene load_steps=10 format=3 uid="uid://dxo2ec4gcr203"]
+
+[ext_resource type="Texture2D" uid="uid://dcjrew5jqmo3e" path="res://assets/inner.png" id="1_c5fog"]
+[ext_resource type="Script" path="res://scenes/lock.gd" id="1_tnfkh"]
+[ext_resource type="Texture2D" uid="uid://b5kslhlh3cxuk" path="res://assets/top.png" id="2_elh8l"]
+[ext_resource type="AudioStream" uid="uid://lfiu78bu6l4l" path="res://assets/unlock.mp3" id="4_r64xg"]
+
+[sub_resource type="Animation" id="Animation_tvi3e"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("shackle:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(196, 306)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("shackle:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("lock_body:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("unlock_sound:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_h8shh"]
+resource_name = "lock"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("shackle:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(196, 194), Vector2(196, 306)]
+}
+
+[sub_resource type="Animation" id="Animation_6v3nx"]
+resource_name = "unlcok"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("shackle:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(196, 306), Vector2(196, 194)]
+}
+
+[sub_resource type="Animation" id="Animation_7pxds"]
+resource_name = "unlock_2"
+length = 1.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("shackle:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 1.12923]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("shackle:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(196, 306), Vector2(196, 316), Vector2(196, 306), Vector2(261, 271)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("lock_body:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.4, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(3, 1), Vector2(1, -1), Vector2(-2, 2), Vector2(0, 0), Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("unlock_sound:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xx1i4"]
+_data = {
+"RESET": SubResource("Animation_tvi3e"),
+"lock": SubResource("Animation_h8shh"),
+"unlock": SubResource("Animation_6v3nx"),
+"unlock_2": SubResource("Animation_7pxds")
+}
+
+[node name="lock" type="Node2D"]
+script = ExtResource("1_tnfkh")
+
+[node name="shackle" type="Sprite2D" parent="."]
+modulate = Color(0.0392157, 0.0901961, 0.0980392, 1)
+position = Vector2(196, 306)
+scale = Vector2(0.333, 0.333)
+texture = ExtResource("2_elh8l")
+
+[node name="lock_body" type="Node2D" parent="."]
+
+[node name="background" type="Sprite2D" parent="lock_body"]
+modulate = Color(0.0392157, 0.0901961, 0.101961, 1)
+position = Vector2(196, 483)
+scale = Vector2(0.453, 0.453)
+texture = ExtResource("1_c5fog")
+
+[node name="foreground" type="Sprite2D" parent="lock_body"]
+modulate = Color(0.266667, 0.631373, 0.713726, 1)
+position = Vector2(196, 483)
+scale = Vector2(0.333, 0.333)
+texture = ExtResource("1_c5fog")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_xx1i4")
+}
+
+[node name="unlock_sound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_r64xg")
+volume_db = -4.379
