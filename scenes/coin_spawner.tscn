@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://bjesc1gi823fb"]
+
+[node name="coin_spawner" type="Node2D"]

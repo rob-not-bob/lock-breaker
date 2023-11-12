@@ -1,13 +1,17 @@
 extends Area2D
 
-signal coin_entered(area: Area2D);
-signal coin_exited(area: Area2D);
+class_name Coin;
+
+signal coin_missed;
+
+func collect_coin():
+	self.disconnect("area_exited", _on_area_exited)
+	queue_free();
 
 var in_coin = false;
 func _on_area_entered(area):
 	in_coin = true;
-	coin_entered.emit(area);
 
 func _on_area_exited(area):
 	in_coin = false;
-	coin_exited.emit(area);
+	coin_missed.emit();
