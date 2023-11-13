@@ -13,9 +13,9 @@ func _ready():
 	info_calculated.emit(center, radius, trackWidth);
 
 func lock() -> Signal:
-	$AnimationPlayer.play("lock");
+	$AnimationPlayer.play_backwards("unlock");
 	return $AnimationPlayer.animation_finished;
 
 func unlock() -> Signal:
-	$AnimationPlayer.play("unlock_2");
+	$AnimationPlayer.play("unlock");
 	return $AnimationPlayer.animation_finished;

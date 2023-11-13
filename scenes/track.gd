@@ -8,9 +8,10 @@ signal coin_collected;
 var _center: Vector2 = Vector2.ZERO;
 var _radius: float = 0;
 
-func initialize(center: Vector2, radius: float, track_width: float):
+func initialize(center: Vector2, radius: float, track_width: float, start_angle: float = 0):
 	_radius = radius;
 	_center = center;
+	current_angle = start_angle;
 	$coin_spawner.calculate_coin_scale(track_width);
 
 func lose():

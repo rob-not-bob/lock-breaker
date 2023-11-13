@@ -9,16 +9,14 @@ func show_game_over_screen():
 	);
 
 func _ready():
-	var difficulty = SceneSwitcher.get_param("difficulty")
-	if difficulty:
-		level_difficulty = difficulty;
-
+	level_difficulty = SceneSwitcher.get_param("difficulty", 1)
 	lock_difficulty = level_difficulty;
 	$lock/countdown.text = str(lock_difficulty);
 	$track.create_coin();
 
 func _on_lock_info_calculated(center, radius, trackWidth):
-	$track.initialize(center, radius, trackWidth);
+	var angle = SceneSwitcher.get_param("angle", 0)
+	$track.initialize(center, radius, trackWidth, angle);
 
 func _on_coin_collected():
 	if lock_difficulty <= 0:
@@ -29,7 +27,11 @@ func _on_coin_collected():
 	if lock_difficulty == 0:
 		$track.direction = 0;
 		await $lock.unlock();
-		SceneSwitcher.change_scene("res://scenes/main.tscn", { "difficulty": level_difficulty + 1 })
+		await $lock.lock();
+		SceneSwitcher.change_scene("res://scenes/main.tscn", {
+			"difficulty": level_difficulty + 1,
+			"angle": $track.current_angle,
+		})
 	else:
 		$track.create_coin();
 
