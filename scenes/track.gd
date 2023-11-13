@@ -36,7 +36,7 @@ func _process(delta):
 		invert_direction();
 
 	current_angle += rotation_speed * direction * delta;
-	$indicator.global_position = MyUtils.get_position_about_point(_center, _radius, current_angle);
+	$indicator.position = MyUtils.get_position_about_point(_center, _radius, current_angle);
 	$indicator.rotation = current_angle;
 
 var coin: Coin;
