@@ -1,4 +1,7 @@
-[gd_resource type="Theme" format=3 uid="uid://7ufvk254irrw"]
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://7ufvk254irrw"]
+
+[ext_resource type="FontFile" uid="uid://yltbd33hu48c" path="res://assets/PublicPixel-z84yD.ttf" id="1_ke8og"]
 
 [resource]
-default_font_size = 24
+default_font = ExtResource("1_ke8og")
+default_font_size = 19

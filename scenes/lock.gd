@@ -1,6 +1,12 @@
 extends Node2D
 
 signal lock_lost(best_score: int);
+signal lock_won(beaten_lock_difficulty: int);
+
+@onready var bg: Sprite2D = $lock_body/background;
+@onready var fg: Sprite2D = $lock_body/foreground;
+@onready var track: Track = $lock_body/track;
+@onready var countdown: Label = $lock_body/countdown;
 
 @export var lock_difficulty: int = 1;
 var current_difficulty: int = lock_difficulty;
@@ -23,22 +29,21 @@ func set_lock_difficulty(difficulty: int) -> void:
 
 
 func _ready():
-	var bgWidth = $lock_body/background.texture.get_width() * $lock_body/background.scale.x;
-	var fgWidth = $lock_body/foreground.texture.get_width() * $lock_body/foreground.scale.x;
+	var bgWidth = bg.texture.get_width() * bg.scale.x;
+	var fgWidth = fg.texture.get_width() * fg.scale.x;
 	
-	var center = $lock_body/background.position;
+	var center = bg.position;
 	var trackWidth = (bgWidth - fgWidth) / 2;
 	var radius = fgWidth / 2 + trackWidth / 2;
 	
-	$lock_body/track.initialize(center, radius, trackWidth);
-	$lock_body/track.create_coin();
+	track.initialize(center, radius, trackWidth);
+	track.create_coin();
 
 func _set_difficulty(difficulty: int):
 	current_difficulty = difficulty;
-	$lock_body/countdown.text = str(current_difficulty);
+	countdown.text = str(current_difficulty);
 
 func _on_coin_collected():
-	print("current_difficulty")
 	if current_difficulty <= 0:
 		return;
 	_set_difficulty(current_difficulty - 1);
@@ -51,8 +56,11 @@ func _on_coin_collected():
 func _on_win():
 	var old_direction = $lock_body/track.direction;
 	$lock_body/track.direction = 0;
+	lock_won.emit(lock_difficulty);
+	
 	await unlock();
 	await lock();
+	
 	set_lock_difficulty(lock_difficulty + 1);
 	$lock_body/track.create_coin();
 	$lock_body/track.direction = old_direction;

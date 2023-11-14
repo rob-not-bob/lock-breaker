@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 _Utils="*res://scripts/Utils.gd"
 SceneSwitcher="*res://scripts/scene_switcher.gd"
+GameSaver="*res://scripts/game_saver.gd"
 
 [display]
 

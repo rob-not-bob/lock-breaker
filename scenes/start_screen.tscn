@@ -32,7 +32,7 @@ metadata/_edit_lock_ = true
 [node name="PopTheLock" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_j0f74")
-theme_override_font_sizes/font_size = 49
+theme_override_font_sizes/font_size = 43
 text = "Pop The Lock
 "
 horizontal_alignment = 1

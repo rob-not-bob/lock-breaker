@@ -9,7 +9,7 @@ func change_scene(next_scene, params=null):
 	get_tree().change_scene_to_file(next_scene)
 
 # In the newly opened scene, you can get the parameters by name
-func get_param(name, default_value = null):
-	if _params != null and _params.has(name):
-		return _params[name];
+func get_param(param, default_value = null):
+	if _params != null and _params.has(param):
+		return _params[param];
 	return default_value;

@@ -9,9 +9,9 @@ func collect_coin():
 	queue_free();
 
 var in_coin = false;
-func _on_area_entered(area):
+func _on_area_entered(_area):
 	in_coin = true;
 
-func _on_area_exited(area):
+func _on_area_exited(_area):
 	in_coin = false;
 	coin_missed.emit();

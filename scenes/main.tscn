@@ -35,3 +35,4 @@ script = ExtResource("1_1yv36")
 position = Vector2(0, -110)
 
 [connection signal="lock_lost" from="CenterContainer/SubViewportContainer/SubViewport/lock" to="CenterContainer/SubViewportContainer/SubViewport" method="_on_lose"]
+[connection signal="lock_won" from="CenterContainer/SubViewportContainer/SubViewport/lock" to="CenterContainer/SubViewportContainer/SubViewport" method="_on_lock_beat"]

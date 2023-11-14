@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name Track
+
 @export var rotation_speed: float = 2.5;
 
 signal lost;

@@ -32,7 +32,7 @@ metadata/_edit_lock_ = true
 [node name="GameOver" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_bnhkj")
-theme_override_font_sizes/font_size = 49
+theme_override_font_sizes/font_size = 37
 text = "Game Over"
 horizontal_alignment = 1
 vertical_alignment = 1
