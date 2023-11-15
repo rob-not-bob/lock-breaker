@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0g4kiq87bjnv"]
+
+[ext_resource type="Script" path="res://scenes/screens/start_screen.gd" id="1_osqaq"]
+[ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="2_j0f74"]
+
+[node name="StartScreen" type="CanvasLayer"]
+script = ExtResource("1_osqaq")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.266667, 0.631373, 0.713726, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -1.0
+offset_right = -24.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="PopTheLock" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_j0f74")
+theme_override_font_sizes/font_size = 43
+text = "Pop The Lock
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Start" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_j0f74")
+text = "Start"
+
+[node name="Quit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_j0f74")
+text = "Quit"
+
+[connection signal="button_up" from="VBoxContainer/Start" to="." method="_on_start_button_up"]
+[connection signal="button_up" from="VBoxContainer/Quit" to="." method="_on_quit_button_up"]

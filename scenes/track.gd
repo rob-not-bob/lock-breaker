@@ -33,15 +33,17 @@ func invert_direction():
 
 var current_angle: float = 0;
 var direction = 1;
-func _process(delta):
-	if Input.is_action_just_pressed("invert"):
-		invert_direction();
 
+func _physics_process(delta):
 	current_angle += rotation_speed * direction * delta;
 	$indicator.position = MyUtils.get_position_about_point(_center, _radius, current_angle);
 	$indicator.rotation = current_angle;
 
+func _process(_delta):
+	if Input.is_action_just_pressed("invert"):
+		invert_direction();
+
 var coin: Coin;
-func create_coin():
-	coin = $coin_spawner.spawn_coin(_center, _radius, current_angle);
+func create_coin(spawn_distance_override = null):
+	coin = $coin_spawner.spawn_coin(_center, _radius, current_angle, spawn_distance_override);
 	coin.connect("coin_missed", lose)

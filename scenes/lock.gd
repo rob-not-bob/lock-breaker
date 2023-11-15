@@ -1,15 +1,45 @@
 extends Node2D
 
 signal lock_lost(best_score: int);
-signal lock_won(beaten_lock_difficulty: int);
+signal lock_won(beaten_lock_difficulty: int, new_speed: float);
 
 @onready var bg: Sprite2D = $lock_body/background;
 @onready var fg: Sprite2D = $lock_body/foreground;
 @onready var track: Track = $lock_body/track;
 @onready var countdown: Label = $lock_body/countdown;
 
-@export var lock_difficulty: int = 1;
-var current_difficulty: int = lock_difficulty;
+@export_group("Lock Difficulty")
+@export var lock_difficulty: int = 1:
+	set(difficulty):
+		lock_difficulty = difficulty;
+		current_difficulty = lock_difficulty;
+	get:
+		return lock_difficulty;
+
+@export_group("Lock Speed")
+@export var max_lock_speed: float = 7.0;
+@export var lock_speed: float = 2.0:
+	set(speed):
+		lock_speed = min(speed, max_lock_speed);
+		track.rotation_speed = lock_speed;
+	get:
+		return lock_speed;
+
+@export_group("Coin Spawn Distance")
+@export var first_coin_spawn_distance: float = PI;
+@export var min_coin_spawn_distance: float = PI / 3:
+	set(spawn_distance):
+		min_coin_spawn_distance = spawn_distance;
+		$lock_body/track/coin_spawner.min_coin_spawn_distance = min_coin_spawn_distance;
+	get:
+		return min_coin_spawn_distance;
+
+var current_difficulty: int = lock_difficulty:
+	set(difficulty):
+		current_difficulty = difficulty;
+		countdown.text = str(current_difficulty);
+	get:
+		return current_difficulty;
 
 func lock() -> Signal:
 	$AnimationPlayer.play_backwards("unlock");
@@ -23,11 +53,6 @@ func lose() -> Signal:
 	$AnimationPlayer.play("fail");
 	return $AnimationPlayer.animation_finished;
 
-func set_lock_difficulty(difficulty: int) -> void:
-	lock_difficulty = difficulty;
-	_set_difficulty(difficulty);
-
-
 func _ready():
 	var bgWidth = bg.texture.get_width() * bg.scale.x;
 	var fgWidth = fg.texture.get_width() * fg.scale.x;
@@ -37,33 +62,33 @@ func _ready():
 	var radius = fgWidth / 2 + trackWidth / 2;
 	
 	track.initialize(center, radius, trackWidth);
-	track.create_coin();
-
-func _set_difficulty(difficulty: int):
-	current_difficulty = difficulty;
-	countdown.text = str(current_difficulty);
+	track.create_coin(first_coin_spawn_distance);
 
 func _on_coin_collected():
 	if current_difficulty <= 0:
 		return;
-	_set_difficulty(current_difficulty - 1);
+	current_difficulty -= 1;
 
 	if current_difficulty == 0:
 		_on_win();
 	else:
-		$lock_body/track.create_coin();
+		track.create_coin();
 
 func _on_win():
-	var old_direction = $lock_body/track.direction;
-	$lock_body/track.direction = 0;
-	lock_won.emit(lock_difficulty);
+	var old_direction = track.direction;
+	track.direction = 0;
 	
 	await unlock();
 	await lock();
-	
-	set_lock_difficulty(lock_difficulty + 1);
-	$lock_body/track.create_coin();
-	$lock_body/track.direction = old_direction;
+
+	lock_difficulty += 1;
+	if lock_difficulty % 3 == 0:
+		lock_speed += 0.125;
+
+	lock_won.emit(lock_difficulty, lock_speed);
+
+	track.create_coin(first_coin_spawn_distance);
+	track.direction = old_direction;
 
 func _on_lose():
 	await lose();

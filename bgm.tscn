@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bneiarbw7thba"]
+
+[ext_resource type="AudioStream" uid="uid://b0yd33ru7dgct" path="res://assets/alex-productions-cyberpunk-computer-game-idra(chosic.com).mp3" id="1_yd6o5"]
+
+[node name="BGM" type="AudioStreamPlayer"]
+stream = ExtResource("1_yd6o5")
+volume_db = -28.0
+autoplay = true

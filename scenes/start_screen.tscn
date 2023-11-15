@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://cmrp4252k18ql"]
+[gd_scene load_steps=3 format=3 uid="uid://dcty45r0w2p3s"]
 
-[ext_resource type="Script" path="res://scenes/start_screen.gd" id="1_osqaq"]
+[ext_resource type="Script" path="res://scenes/screens/start_screen.gd" id="1_osqaq"]
 [ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="2_j0f74"]
 
 [node name="StartScreen" type="CanvasLayer"]

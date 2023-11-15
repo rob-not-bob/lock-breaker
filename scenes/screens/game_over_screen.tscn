@@ -1,0 +1,60 @@
+[gd_scene load_steps=3 format=3 uid="uid://bdhrkiy3lgcxv"]
+
+[ext_resource type="Script" path="res://scenes/screens/game_over_screen.gd" id="1_lrsry"]
+[ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="2_bnhkj"]
+
+[node name="TryAgain" type="CanvasLayer"]
+script = ExtResource("1_lrsry")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0313726, 0.25098, 0.290196, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -1.0
+offset_right = -24.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="GameOver" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_bnhkj")
+theme_override_font_sizes/font_size = 37
+text = "Game Over"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="BestScore" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_bnhkj")
+text = "Best Score: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="TryAgain" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_bnhkj")
+text = "Try Again"
+
+[node name="Quit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_bnhkj")
+text = "Quit"
+
+[connection signal="button_up" from="VBoxContainer/TryAgain" to="." method="_on_try_again_button_up"]
+[connection signal="button_up" from="VBoxContainer/Quit" to="." method="_on_quit_button_up"]

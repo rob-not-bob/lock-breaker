@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dxo2ec4gcr203"]
+[gd_scene load_steps=14 format=3 uid="uid://dxo2ec4gcr203"]
 
 [ext_resource type="Texture2D" uid="uid://dcjrew5jqmo3e" path="res://assets/inner.png" id="1_c5fog"]
 [ext_resource type="Script" path="res://scenes/lock.gd" id="1_tnfkh"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bpy1hd0buwsk4" path="res://scenes/track.tscn" id="4_mem34"]
 [ext_resource type="AudioStream" uid="uid://lfiu78bu6l4l" path="res://assets/unlock.mp3" id="4_r64xg"]
 [ext_resource type="Texture2D" uid="uid://rlt4uisyrxs" path="res://assets/lock_body_bw.png" id="5_rqpu6"]
+[ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="6_bq63j"]
 
 [sub_resource type="Animation" id="Animation_tvi3e"]
 length = 0.001
@@ -96,7 +97,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.3, 0.5),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(0, 0), Vector2(6, 0), Vector2(-6, 0), Vector2(0, 0)]
+"values": [Vector2(0, 0), Vector2(8, 0), Vector2(-8, 0), Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_h8shh"]
@@ -139,7 +140,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.2, 0.4, 1),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(196, 306), Vector2(196, 316), Vector2(196, 306), Vector2(261, 271)]
+"values": [Vector2(196, 285), Vector2(196, 304), Vector2(196, 285), Vector2(284, 248)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -204,7 +205,7 @@ script = ExtResource("1_tnfkh")
 [node name="shackle" type="Sprite2D" parent="."]
 modulate = Color(0.0392157, 0.0901961, 0.0980392, 1)
 position = Vector2(196, 306)
-scale = Vector2(0.333, 0.333)
+scale = Vector2(0.37, 0.37)
 texture = ExtResource("2_elh8l")
 
 [node name="pixel_shackle" type="Sprite2D" parent="."]
@@ -219,13 +220,13 @@ texture = ExtResource("3_38vhj")
 [node name="background" type="Sprite2D" parent="lock_body"]
 modulate = Color(0.0392157, 0.0901961, 0.101961, 1)
 position = Vector2(196, 483)
-scale = Vector2(0.453, 0.453)
+scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_c5fog")
 
 [node name="foreground" type="Sprite2D" parent="lock_body"]
 modulate = Color(0.266667, 0.631373, 0.713726, 1)
 position = Vector2(196, 483)
-scale = Vector2(0.333, 0.333)
+scale = Vector2(0.36, 0.36)
 texture = ExtResource("1_c5fog")
 
 [node name="pixel_lock_body" type="Sprite2D" parent="lock_body"]
@@ -237,15 +238,14 @@ scale = Vector2(2.8125, 2.8125)
 texture = ExtResource("5_rqpu6")
 
 [node name="countdown" type="Label" parent="lock_body"]
-offset_left = 154.0
-offset_top = 380.0
-offset_right = 237.0
-offset_bottom = 583.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = 111.0
+offset_top = 374.0
+offset_right = 293.0
+offset_bottom = 577.0
+theme = ExtResource("6_bq63j")
 theme_override_colors/font_color = Color(1, 1, 1, 0.698039)
-theme_override_font_sizes/font_size = 146
-text = "0"
+theme_override_font_sizes/font_size = 91
+text = "20"
 horizontal_alignment = 1
 vertical_alignment = 1
 
