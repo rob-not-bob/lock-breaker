@@ -47,3 +47,10 @@ common/physics_ticks_per_second=120
 
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+
+[shader_globals]
+
+spectrum_texture={
+"type": "sampler2D",
+"value": "res://icon.svg"
+}

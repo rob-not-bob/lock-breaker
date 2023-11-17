@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dxo2ec4gcr203"]
+[gd_scene load_steps=17 format=3 uid="uid://dxo2ec4gcr203"]
 
 [ext_resource type="Texture2D" uid="uid://dcjrew5jqmo3e" path="res://assets/inner.png" id="1_c5fog"]
 [ext_resource type="Script" path="res://scenes/lock.gd" id="1_tnfkh"]
@@ -8,6 +8,39 @@
 [ext_resource type="AudioStream" uid="uid://lfiu78bu6l4l" path="res://assets/unlock.mp3" id="4_r64xg"]
 [ext_resource type="Texture2D" uid="uid://rlt4uisyrxs" path="res://assets/lock_body_bw.png" id="5_rqpu6"]
 [ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="6_bq63j"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jg1jg"]
+load_path = "res://.godot/imported/inner.png-f2f7a5e7821226d7f95c704cedf0d1c0.ctex"
+
+[sub_resource type="Shader" id="Shader_wg8gg"]
+code = "shader_type canvas_item;
+
+uniform vec2 play_grow_scale = vec2(0.005, 0.005);
+uniform float play_grow_speed = 20.0;
+
+float expImpulse(float x, float k) {
+    float h = k*x;
+    return h*exp(1.0-h);
+}
+
+float time_shaper(float x) {
+	return (1.0 / x) * mod(TIME, x);
+}
+
+void vertex() {
+    // VERTEX *= play_grow_scale * (sin(TIME * play_grow_speed) + 1.0);
+	// VERTEX *= 1.0 + play_grow_scale * sin(TIME * play_grow_speed);
+	// VERTEX *= 0.08 * expImpulse(time_shaper(0.5), 8.) + 0.95;
+}
+
+void fragment() {
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dudv2"]
+shader = SubResource("Shader_wg8gg")
+shader_parameter/play_grow_scale = Vector2(0.005, 0.005)
+shader_parameter/play_grow_speed = 20.0
 
 [sub_resource type="Animation" id="Animation_tvi3e"]
 length = 0.001
@@ -221,7 +254,7 @@ texture = ExtResource("3_38vhj")
 modulate = Color(0.0392157, 0.0901961, 0.101961, 1)
 position = Vector2(196, 483)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("1_c5fog")
+texture = SubResource("CompressedTexture2D_jg1jg")
 
 [node name="foreground" type="Sprite2D" parent="lock_body"]
 modulate = Color(0.266667, 0.631373, 0.713726, 1)
@@ -238,6 +271,7 @@ scale = Vector2(2.8125, 2.8125)
 texture = ExtResource("5_rqpu6")
 
 [node name="countdown" type="Label" parent="lock_body"]
+material = SubResource("ShaderMaterial_dudv2")
 offset_left = 111.0
 offset_top = 374.0
 offset_right = 293.0
