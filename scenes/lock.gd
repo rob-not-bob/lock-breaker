@@ -3,8 +3,7 @@ extends Node2D
 signal lock_lost(best_score: int);
 signal lock_won(beaten_lock_difficulty: int, new_speed: float);
 
-@onready var bg: Sprite2D = $lock_body/background;
-@onready var fg: Sprite2D = $lock_body/foreground;
+@onready var arc_donut: ArcDonut = $lock_body/arc_donut;
 @onready var track: Track = $lock_body/track;
 @onready var countdown: Label = $lock_body/countdown;
 
@@ -42,24 +41,22 @@ var current_difficulty: int = lock_difficulty:
 		return current_difficulty;
 
 func lock() -> Signal:
-	$AnimationPlayer.play_backwards("unlock");
+	# $AnimationPlayer.play_backwards("unlock");
 	return $AnimationPlayer.animation_finished;
 
 func unlock() -> Signal:
-	$AnimationPlayer.play("unlock");
+	# $AnimationPlayer.play("unlock");
 	return $AnimationPlayer.animation_finished;
 
 func lose() -> Signal:
-	$AnimationPlayer.play("fail");
+	# $AnimationPlayer.play("fail");
 	return $AnimationPlayer.animation_finished;
 
 func _ready():
-	var bgWidth = bg.texture.get_width() * bg.scale.x;
-	var fgWidth = fg.texture.get_width() * fg.scale.x;
-	
-	var center = bg.position;
-	var trackWidth = (bgWidth - fgWidth) / 2;
-	var radius = fgWidth / 2 + trackWidth / 2;
+	var center = arc_donut.position;
+	var inner_radius = arc_donut.outer_radius * arc_donut.inner_to_outer_ratio;
+	var trackWidth = (arc_donut.outer_radius - inner_radius) / 2;
+	var radius = (inner_radius + arc_donut.outer_radius) / 2;
 	
 	track.initialize(center, radius, trackWidth);
 	track.create_coin(first_coin_spawn_distance);

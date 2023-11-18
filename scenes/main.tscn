@@ -17,14 +17,14 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.266667, 0.631373, 0.713726, 1)
+color = Color(0.0980392, 0.447059, 0.470588, 1)
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.004
-offset_right = 2.0
-offset_bottom = -0.408081
+offset_right = -3.0
+offset_bottom = -0.223877
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="CenterContainer"]
 layout_mode = 2
@@ -33,12 +33,12 @@ layout_mode = 2
 disable_3d = true
 transparent_bg = true
 handle_input_locally = false
-size = Vector2i(383, 612)
+size = Vector2i(1176, 2142)
 render_target_update_mode = 4
 script = ExtResource("1_1yv36")
 
 [node name="lock" parent="CenterContainer/SubViewportContainer/SubViewport" instance=ExtResource("1_ws75f")]
-position = Vector2(0, -110)
+position = Vector2(0, -175)
 
 [node name="shader" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_ayhpd")

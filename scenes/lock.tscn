@@ -1,120 +1,61 @@
-[gd_scene load_steps=17 format=3 uid="uid://dxo2ec4gcr203"]
+[gd_scene load_steps=12 format=3 uid="uid://dxo2ec4gcr203"]
 
-[ext_resource type="Texture2D" uid="uid://dcjrew5jqmo3e" path="res://assets/inner.png" id="1_c5fog"]
 [ext_resource type="Script" path="res://scenes/lock.gd" id="1_tnfkh"]
-[ext_resource type="Texture2D" uid="uid://b5kslhlh3cxuk" path="res://assets/top.png" id="2_elh8l"]
-[ext_resource type="Texture2D" uid="uid://dt2d2b7s3mvk2" path="res://assets/shackle_bw.png" id="3_38vhj"]
+[ext_resource type="PackedScene" uid="uid://ch5418xgdqmbj" path="res://scenes/shackle.tscn" id="3_70kar"]
 [ext_resource type="PackedScene" uid="uid://bpy1hd0buwsk4" path="res://scenes/track.tscn" id="4_mem34"]
 [ext_resource type="AudioStream" uid="uid://lfiu78bu6l4l" path="res://assets/unlock.mp3" id="4_r64xg"]
-[ext_resource type="Texture2D" uid="uid://rlt4uisyrxs" path="res://assets/lock_body_bw.png" id="5_rqpu6"]
 [ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="6_bq63j"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jg1jg"]
-load_path = "res://.godot/imported/inner.png-f2f7a5e7821226d7f95c704cedf0d1c0.ctex"
-
-[sub_resource type="Shader" id="Shader_wg8gg"]
-code = "shader_type canvas_item;
-
-uniform vec2 play_grow_scale = vec2(0.005, 0.005);
-uniform float play_grow_speed = 20.0;
-
-float expImpulse(float x, float k) {
-    float h = k*x;
-    return h*exp(1.0-h);
-}
-
-float time_shaper(float x) {
-	return (1.0 / x) * mod(TIME, x);
-}
-
-void vertex() {
-    // VERTEX *= play_grow_scale * (sin(TIME * play_grow_speed) + 1.0);
-	// VERTEX *= 1.0 + play_grow_scale * sin(TIME * play_grow_speed);
-	// VERTEX *= 0.08 * expImpulse(time_shaper(0.5), 8.) + 0.95;
-}
-
-void fragment() {
-}
-"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dudv2"]
-shader = SubResource("Shader_wg8gg")
-shader_parameter/play_grow_scale = Vector2(0.005, 0.005)
-shader_parameter/play_grow_speed = 20.0
+[ext_resource type="PackedScene" uid="uid://drgb3ug0av0u8" path="res://scenes/arc_donut.tscn" id="8_pripq"]
 
 [sub_resource type="Animation" id="Animation_tvi3e"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("shackle:position")
+tracks/0/path = NodePath("shackle:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(196, 306)]
+"values": [0.0]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("shackle:rotation")
+tracks/1/path = NodePath("lock_body:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.0]
+"values": [Vector2(0, 0)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("lock_body:position")
+tracks/2/path = NodePath("unlock_sound:playing")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
+"update": 1,
+"values": [true]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("unlock_sound:playing")
+tracks/3/path = NodePath("shackle:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("pixel_shackle:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
 "update": 0,
-"values": [0.0]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("pixel_shackle:position")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(196, 420)]
+"values": []
 }
 
 [sub_resource type="Animation" id="Animation_uuhfv"]
@@ -199,30 +140,6 @@ tracks/3/keys = {
 "update": 1,
 "values": [true]
 }
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("pixel_shackle:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.4, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0.0, 0.0, 1.12923]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("pixel_shackle:position")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(196, 420), Vector2(196, 430), Vector2(196, 420), Vector2(208, 300)]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xx1i4"]
 _data = {
@@ -235,56 +152,41 @@ _data = {
 [node name="lock" type="Node2D"]
 script = ExtResource("1_tnfkh")
 
-[node name="shackle" type="Sprite2D" parent="."]
-modulate = Color(0.0392157, 0.0901961, 0.0980392, 1)
-position = Vector2(196, 306)
-scale = Vector2(0.37, 0.37)
-texture = ExtResource("2_elh8l")
-
-[node name="pixel_shackle" type="Sprite2D" parent="."]
-visible = false
-texture_filter = 1
-position = Vector2(196, 420)
-scale = Vector2(2.812, 2.812)
-texture = ExtResource("3_38vhj")
+[node name="shackle" parent="." instance=ExtResource("3_70kar")]
+position = Vector2(588, 857)
+inner_to_outer_ratio = 0.55
+outer_radius = 281.302
+shackle_length = 186.486
+color = Color(0.054902, 0.164706, 0.168627, 1)
 
 [node name="lock_body" type="Node2D" parent="."]
 
-[node name="background" type="Sprite2D" parent="lock_body"]
-modulate = Color(0.0392157, 0.0901961, 0.101961, 1)
-position = Vector2(196, 483)
-scale = Vector2(0.5, 0.5)
-texture = SubResource("CompressedTexture2D_jg1jg")
-
-[node name="foreground" type="Sprite2D" parent="lock_body"]
-modulate = Color(0.266667, 0.631373, 0.713726, 1)
-position = Vector2(196, 483)
-scale = Vector2(0.36, 0.36)
-texture = ExtResource("1_c5fog")
-
-[node name="pixel_lock_body" type="Sprite2D" parent="lock_body"]
-visible = false
-modulate = Color(0.772549, 0.658824, 0.270588, 1)
-texture_filter = 1
-position = Vector2(196, 403)
-scale = Vector2(2.8125, 2.8125)
-texture = ExtResource("5_rqpu6")
-
-[node name="countdown" type="Label" parent="lock_body"]
-material = SubResource("ShaderMaterial_dudv2")
-offset_left = 111.0
-offset_top = 374.0
-offset_right = 293.0
-offset_bottom = 577.0
-theme = ExtResource("6_bq63j")
-theme_override_colors/font_color = Color(1, 1, 1, 0.698039)
-theme_override_font_sizes/font_size = 91
-text = "20"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="arc_donut" parent="lock_body" instance=ExtResource("8_pripq")]
+position = Vector2(588, 1375)
+inner_to_outer_ratio = 0.72
+outer_radius = 457.464
 
 [node name="track" parent="lock_body" instance=ExtResource("4_mem34")]
 rotation_speed = 2.75
+
+[node name="countdown" type="Label" parent="lock_body"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 328.0
+offset_top = 1243.5
+offset_right = 848.0
+offset_bottom = 1506.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("6_bq63j")
+theme_override_colors/font_color = Color(1, 1, 1, 0.878431)
+theme_override_font_sizes/font_size = 260
+text = "20"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

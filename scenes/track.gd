@@ -14,7 +14,13 @@ func initialize(center: Vector2, radius: float, track_width: float, start_angle:
 	_radius = radius;
 	_center = center;
 	current_angle = start_angle;
-	$coin_spawner.calculate_coin_scale(track_width);
+	_set_sizes(track_width);
+
+func _set_sizes(track_width: float):
+	var pixel_size = float($indicator/Sprite2D.texture.get_size().x);
+	var ratio = (track_width - 10) / pixel_size;
+	$indicator.scale = Vector2(ratio, ratio) * 2.0;
+	print('Pixel size ', pixel_size, ' ratio ', ratio);
 
 func lose():
 	direction = 0;

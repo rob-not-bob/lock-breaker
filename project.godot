@@ -24,8 +24,10 @@ Bgm="*res://bgm.tscn"
 
 [display]
 
-window/size/viewport_width=393
-window/size/viewport_height=852
+window/size/viewport_width=1179
+window/size/viewport_height=2556
+window/size/window_width_override=393
+window/size/window_height_override=852
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 window/handheld/orientation=1
