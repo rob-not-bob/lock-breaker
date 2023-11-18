@@ -13,6 +13,7 @@ class_name ArcDonut;
 @export var arc_names: Array[String] = ["yellow", "orange", "red"];
 @export var angle_sizes: Array[float] = [21.6, 10.8, 5.4];
 @export var colors: Array[Color] = [Color.html("#EE9B00"), Color.html("#CA6702"), Color.html("#AE2012")];
+@export var reverse: bool = false;
 
 func _process(_delta):
 	if Engine.is_editor_hint():
@@ -35,28 +36,67 @@ func _draw_arc_donut_about_point(center: Vector2, from_angle: float, to_angle: f
 ## Returns the name of the arc at _deg
 func get_arc_name_at(_deg: float):
 	var deg = fmod(_deg, 360);
-	print("deg ", deg)
-	if deg < start_angle:
+	var arc_start = start_angle;
+
+	# If reverse manipulate deg to be relative to start_angle so
+	# our code still works
+	if reverse:
+		deg = deg - start_angle;
+		if deg < 0:
+			deg = 360 + deg;
+
+		var sum = 0;
+		for angle in angle_sizes:
+			sum += angle;
+		arc_start = 360 - sum;
+
+	if deg < arc_start:
 		return null;
 
-	var total_angle = start_angle;
+	var total_angle = arc_start;
 	for i in len(angle_sizes):
-		var angle = angle_sizes[i];
+		var index = len(angle_sizes) - i - 1 if reverse else i;
+		var angle = angle_sizes[index];
 		total_angle += angle;
 		print("angle ", total_angle)
 		if deg <= total_angle:
-			return arc_names[i];
+			return arc_names[index];
 
 	return null;
+
+
+
+#func _ready():
+#	print("0: ", get_arc_name_at(0)); # yellow
+#	print("360: ", get_arc_name_at(360)); # yellow
+#	print("10: ", get_arc_name_at(10)); # yellow
+#	print("30: ", get_arc_name_at(30)); # orange
+#	print("32.4: ", get_arc_name_at(32.4)); # orange
+#	print("32.5: ", get_arc_name_at(32.5)); # red
+#	print("37.8: ", get_arc_name_at(37.8)); # red
+#	print("37.9: ", get_arc_name_at(37.9)); # none
+#	print("394.8: ", get_arc_name_at(394.8)); # red
+#	print("------------------------------");
+#	print("0: ", get_arc_name_at(0)); # null
+#	print("360: ", get_arc_name_at(360)); # null
+#	print("350: ", get_arc_name_at(350)); # yellow
+#	print("330: ", get_arc_name_at(330)); # orange
+#	print("327.6: ", get_arc_name_at(327.6)); # orange
+#	print("327.5: ", get_arc_name_at(327.5)); # red
+#	print("322.2: ", get_arc_name_at(322.2)); # red
+#	print("322.1: ", get_arc_name_at(322.1)); # none
 
 func _draw():
 	var angle_start = start_angle;
 	for i in len(angle_sizes):
-		var angle = angle_sizes[i];
+		var angle = -angle_sizes[i] if reverse else angle_sizes[i];
 		_draw_arc_donut_about_point(Vector2(0, 0),
 			angle_start, angle_start + angle,
 			colors[i],
 		);
 		angle_start += angle;
 
-	_draw_arc_donut_about_point(Vector2(0, 0), angle_start, 360 + start_angle, bg_color);
+	if reverse:
+		_draw_arc_donut_about_point(Vector2(0, 0), start_angle, 360 + angle_start, bg_color);
+	else:
+		_draw_arc_donut_about_point(Vector2(0, 0), angle_start, 360 + start_angle, bg_color);
