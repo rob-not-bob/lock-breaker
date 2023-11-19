@@ -60,14 +60,26 @@ func get_arc_name_at(_deg: float):
 		var index = len(angle_sizes) - i - 1 if reverse else i;
 		var angle = angle_sizes[index];
 		total_angle += angle;
-		print("angle ", total_angle)
 		if deg <= total_angle:
 			return arc_names[index];
 
 	# Should never be called
 	return null;
 
+func get_start_angle():
+	return start_angle;
 
+func get_end_angle():
+	var sum = 0;
+	for angle in angle_sizes:
+		sum += angle;
+	
+	var end_angle = start_angle - sum if reverse else start_angle + sum;
+	if end_angle < 0:
+		end_angle = 360 + end_angle;
+	end_angle = fmod(end_angle, 360);
+
+	return end_angle;
 
 func _ready():
 	print("281: ", get_arc_name_at(281)); # null)

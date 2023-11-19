@@ -39,6 +39,10 @@ signal lock_won(beaten_lock_difficulty: int, new_speed: float);
 	get:
 		return current_difficulty;
 
+var was_between: bool = false;
+var start_angle: float = 0;
+var end_angle: float = 0;
+
 func lock() -> Signal:
 	# $AnimationPlayer.play_backwards("unlock");
 	return $AnimationPlayer.animation_finished;
@@ -60,21 +64,29 @@ func _ready():
 	
 	indicator.initialize(center, radius, trackWidth);
 	arc_donut.reverse = indicator.direction == -1;
+	start_angle = arc_donut.get_start_angle();
+	end_angle = arc_donut.get_end_angle();
+	print('end_angle ', end_angle)
 	# indicator.create_coin(first_coin_spawn_distance);
 
 func _process(_delta):
+	var angle = rad_to_deg(indicator.current_angle) + 90;
+
 	if Input.is_action_just_pressed("invert"):
 		indicator.direction *= -1;
 
-		var angle = rad_to_deg(indicator.current_angle) + 90;
-		if angle < 0:
-			angle += 360
-		angle = fmod(angle, 360);
 		print("angle ", angle);
 		var arc = arc_donut.get_arc_name_at(angle);
 		print("arc ", arc);
 		if arc:
 			_on_coin_collected();
+
+	if was_between:
+		if not arc_donut.get_arc_name_at(angle):
+			_on_lose();
+	else:
+		if arc_donut.get_arc_name_at(angle):
+			was_between = true;
 
 func _on_coin_collected():
 	if current_difficulty <= 0:
@@ -87,6 +99,7 @@ func _on_coin_collected():
 		var angle = randf_range(0, 359.9);
 		arc_donut.reverse = indicator.direction == -1;
 		arc_donut.start_angle = angle;
+		was_between = false;
 
 func _on_win():
 	var old_direction = indicator.direction;
@@ -105,5 +118,6 @@ func _on_win():
 	indicator.direction = old_direction;
 
 func _on_lose():
+	indicator.direction = 0;
 	await lose();
 	lock_lost.emit(lock_difficulty - 1);
