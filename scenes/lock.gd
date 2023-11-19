@@ -66,9 +66,9 @@ func _process(_delta):
 	if Input.is_action_just_pressed("pause"):
 		indicator.direction = 0 if indicator.direction != 0 else 1;
 	if Input.is_key_pressed(KEY_LEFT):
-		indicator.current_angle -= 1;
+		indicator.current_angle -= deg_to_rad(1);
 	if Input.is_key_pressed(KEY_RIGHT):
-		indicator.current_angle += 1;
+		indicator.current_angle += deg_to_rad(1);
 
 	var angle = rad_to_deg(indicator.current_angle) + 90;
 	var current_arc = arc_donut.get_arc_name_at(angle);
@@ -124,7 +124,5 @@ func _on_coin_collected(current_arc):
 
 func _on_lose():
 	indicator.direction = 0;
-	print('lost');
 	# await lose();
-	print('lost2');
-	lock_lost.emit(lock_difficulty);
+	# lock_lost.emit(lock_difficulty);

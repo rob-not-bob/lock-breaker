@@ -10,6 +10,7 @@ const __source = 'res://scenes/arc_donut.gd'
 func init_donut():
 	var donut = load(__source).new();
 	donut.start_angle = 0;
+	donut.coyote_angle_size = 0;
 
 	donut.arc_names.clear();
 	donut.arc_names.append_array(["yellow", "orange", "red"]);
@@ -76,5 +77,26 @@ func test_get_arc_name_at_across_boundary() -> void:
 	donut.reverse = true;
 	donut.start_angle = 272.628439891698;
 	assert_str(donut.get_arc_name_at(-97.6436779053442)).is_equal("yellow");
+
+	donut.free();
+
+func test_get_arc_name_at_coyote_angle() -> void:
+	var donut = init_donut();
+	donut.reverse = false;
+	donut.start_angle = 0;
+	donut.coyote_angle_size = 2.5;
+	donut._ready();
+
+	assert_str(donut.get_arc_name_at(37.9)).is_equal("red");
+	assert_str(donut.get_arc_name_at(40.3)).is_equal("red");
+	assert_that(donut.get_arc_name_at(40.4)).is_equal(null);
+
+	donut.reverse = true;
+	donut._ready();
+
+	assert_str(donut.get_arc_name_at(322.2)).is_equal("red");
+	assert_str(donut.get_arc_name_at(322.1)).is_equal("red");
+	assert_str(donut.get_arc_name_at(319.7)).is_equal("red");
+	assert_that(donut.get_arc_name_at(319.6)).is_equal(null);
 
 	donut.free();

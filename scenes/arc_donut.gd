@@ -18,6 +18,7 @@ class_name ArcDonut;
 		return start_angle;
 @export var arc_names: Array[String] = ["yellow", "orange", "red"];
 @export var angle_sizes: Array[float] = [21.6, 10.8, 5.4];
+@export_range(0, 360, 0.1) var coyote_angle_size: float = 2.5;
 @export var colors: Array[Color] = [Color.html("#EE9B00"), Color.html("#CA6702"), Color.html("#AE2012")];
 @export var reverse: bool = false;
 
@@ -27,6 +28,7 @@ func _ready():
 	_sum = 0;
 	for angle in angle_sizes:
 		_sum += angle;
+	_sum += coyote_angle_size;
 
 func _process(_delta):
 	queue_redraw();
@@ -67,6 +69,10 @@ func get_arc_name_at(_deg: float):
 		var angle = angle_sizes[index];
 		total_angle += angle;
 		if deg <= total_angle:
+			return arc_names[index];
+
+		var is_last_arc = i == len(angle_sizes) - 1;
+		if is_last_arc and deg <= (total_angle + coyote_angle_size):
 			return arc_names[index];
 
 	# Should never be called
