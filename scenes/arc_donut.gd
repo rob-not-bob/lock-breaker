@@ -87,29 +87,6 @@ func get_end_angle():
 
 	return end_angle;
 
-#func _ready():
-#	print("281: ", get_arc_name_at(281)); # null)
-#	print("351: ", get_arc_name_at(351)); # yellow)
-#	print("5: ", get_arc_name_at(5)); # yellow)
-#	print("0: ", get_arc_name_at(0)); # yellow
-#	print("360: ", get_arc_name_at(360)); # yellow
-#	print("10: ", get_arc_name_at(10)); # yellow
-#	print("30: ", get_arc_name_at(30)); # orange
-#	print("32.4: ", get_arc_name_at(32.4)); # orange
-#	print("32.5: ", get_arc_name_at(32.5)); # red
-#	print("37.8: ", get_arc_name_at(37.8)); # red
-#	print("37.9: ", get_arc_name_at(37.9)); # none
-#	print("394.8: ", get_arc_name_at(394.8)); # red
-#	print("------------------------------");
-#	print("0: ", get_arc_name_at(0)); # null
-#	print("360: ", get_arc_name_at(360)); # null
-#	print("350: ", get_arc_name_at(350)); # yellow
-#	print("330: ", get_arc_name_at(330)); # orange
-#	print("327.6: ", get_arc_name_at(327.6)); # orange
-#	print("327.5: ", get_arc_name_at(327.5)); # red
-#	print("322.2: ", get_arc_name_at(322.2)); # red
-#	print("322.1: ", get_arc_name_at(322.1)); # none
-
 func _draw():
 	var angle_start = start_angle;
 	for i in len(angle_sizes):

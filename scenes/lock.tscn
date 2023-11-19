@@ -165,7 +165,6 @@ color = Color(0.054902, 0.164706, 0.168627, 1)
 position = Vector2(588, 1375)
 inner_to_outer_ratio = 0.72
 outer_radius = 457.464
-start_angle = 350.0
 reverse = true
 
 [node name="indicator" parent="lock_body" instance=ExtResource("4_mem34")]
