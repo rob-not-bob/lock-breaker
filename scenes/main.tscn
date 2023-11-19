@@ -39,7 +39,6 @@ script = ExtResource("1_1yv36")
 
 [node name="lock" parent="CenterContainer/SubViewportContainer/SubViewport" instance=ExtResource("1_ws75f")]
 position = Vector2(0, -175)
-lock_difficulty = 15
 
 [node name="shader" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_ayhpd")

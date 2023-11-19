@@ -8,7 +8,7 @@ signal lock_won(beaten_lock_difficulty: int, new_speed: float);
 @onready var countdown: Label = $lock_body/countdown;
 
 @export_group("Lock Difficulty")
-@export var lock_difficulty: int = 10:
+@export var lock_difficulty: int = 0:
 	set(difficulty):
 		lock_difficulty = difficulty;
 	get:
@@ -29,7 +29,7 @@ signal lock_won(beaten_lock_difficulty: int, new_speed: float);
 
 @onready var current_difficulty: int = lock_difficulty:
 	set(difficulty):
-		current_difficulty = difficulty;
+		current_difficulty = max(0, difficulty);
 		countdown.text = str(current_difficulty);
 	get:
 		return current_difficulty;
@@ -65,6 +65,9 @@ func _ready():
 	print('end_angle ', end_angle)
 
 func _process(_delta):
+	if indicator.direction == 0:
+		return;
+
 	var angle = rad_to_deg(indicator.current_angle) + 90;
 	var current_arc = arc_donut.get_arc_name_at(angle);
 
@@ -74,7 +77,7 @@ func _process(_delta):
 		print("angle ", angle);
 		print("arc ", current_arc);
 		if current_arc:
-			_on_coin_collected();
+			_on_coin_collected(current_arc);
 
 	if was_between:
 		if not arc_donut.get_arc_name_at(angle):
@@ -82,41 +85,42 @@ func _process(_delta):
 	elif arc_donut.get_arc_name_at(angle):
 			was_between = true;
 
-func _on_coin_collected():
-	if current_difficulty <= 0:
-		return;
-	current_difficulty -= 1;
+func _on_coin_collected(current_arc):
+	if current_arc == "red":
+		current_difficulty += 2;
+	else:
+		current_difficulty += 1;
+
 	was_between = false;
 
-	if current_difficulty == 0:
-		_on_win();
-	else:
-		var angle = rad_to_deg(indicator.current_angle) + 90;
-		printt("angle", angle, angle + min_spawn_distance, angle + 360 - min_spawn_distance)
-		arc_donut.reverse = indicator.direction == -1;
-		arc_donut.start_angle = randf_range(
-			angle + min_spawn_distance,
-			angle + 360 - min_spawn_distance
-		);
-
-func _on_win():
-	var old_direction = indicator.direction;
-	indicator.direction = 0;
-	
-	await unlock();
-	await lock();
-
-	lock_difficulty += 1;
-	if lock_difficulty % 3 == 0:
-		lock_speed += 0.125;
-
-	lock_won.emit(lock_difficulty, lock_speed);
-
-	indicator.direction = old_direction;
-	arc_donut.start_angle = indicator.current_angle + first_spawn_distance + 90;
+	var angle = rad_to_deg(indicator.current_angle) + 90;
+	printt("angle", angle, angle + min_spawn_distance, angle + 360 - min_spawn_distance)
 	arc_donut.reverse = indicator.direction == -1;
+	arc_donut.start_angle = randf_range(
+		angle + min_spawn_distance,
+		angle + 360 - min_spawn_distance
+	);
+
+# func _on_win():
+#	var old_direction = indicator.direction;
+#	indicator.direction = 0;
+#	
+#	await unlock();
+#	await lock();
+
+#	lock_difficulty += 1;
+#	if lock_difficulty % 3 == 0:
+#		lock_speed += 0.125;
+
+#	lock_won.emit(lock_difficulty, lock_speed);
+
+#	indicator.direction = old_direction;
+#	arc_donut.start_angle = indicator.current_angle + first_spawn_distance + 90;
+#	arc_donut.reverse = indicator.direction == -1;
 
 func _on_lose():
 	indicator.direction = 0;
-	await lose();
-	lock_lost.emit(lock_difficulty - 1);
+	print('lost');
+	# await lose();
+	print('lost2');
+	lock_lost.emit(lock_difficulty);

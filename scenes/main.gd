@@ -32,4 +32,5 @@ func _on_lock_beat(new_lock_difficulty: int, new_speed: float):
 	GameSaver.save_game();
 
 func _on_lose(best_score: int):
+	print('lost', best_score)
 	show_game_over_screen(best_score);
