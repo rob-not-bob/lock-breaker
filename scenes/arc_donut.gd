@@ -15,6 +15,13 @@ class_name ArcDonut;
 @export var colors: Array[Color] = [Color.html("#EE9B00"), Color.html("#CA6702"), Color.html("#AE2012")];
 @export var reverse: bool = false;
 
+var _sum: float = 0;
+
+func _ready():
+	_sum = 0;
+	for angle in angle_sizes:
+		_sum += angle;
+
 func _process(_delta):
 	queue_redraw();
 
@@ -47,10 +54,7 @@ func get_arc_name_at(_deg: float):
 
 	var arc_start = 0;
 	if reverse:
-		var sum = 0;
-		for angle in angle_sizes:
-			sum += angle;
-		arc_start = 360 - sum;
+		arc_start = 360 - _sum;
 
 	if deg < arc_start:
 		return null;
@@ -70,21 +74,17 @@ func get_start_angle():
 	return start_angle;
 
 func get_end_angle():
-	var sum = 0;
-	for angle in angle_sizes:
-		sum += angle;
-	
-	var end_angle = start_angle - sum if reverse else start_angle + sum;
+	var end_angle = start_angle - _sum if reverse else start_angle + _sum;
 	if end_angle < 0:
 		end_angle = 360 + end_angle;
 	end_angle = fmod(end_angle, 360);
 
 	return end_angle;
 
-func _ready():
-	print("281: ", get_arc_name_at(281)); # null)
-	print("351: ", get_arc_name_at(351)); # yellow)
-	print("5: ", get_arc_name_at(5)); # yellow)
+#func _ready():
+#	print("281: ", get_arc_name_at(281)); # null)
+#	print("351: ", get_arc_name_at(351)); # yellow)
+#	print("5: ", get_arc_name_at(5)); # yellow)
 #	print("0: ", get_arc_name_at(0)); # yellow
 #	print("360: ", get_arc_name_at(360)); # yellow
 #	print("10: ", get_arc_name_at(10)); # yellow
