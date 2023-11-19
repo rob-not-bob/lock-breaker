@@ -23,6 +23,5 @@ func _set_sizes(track_width: float):
 
 func _physics_process(delta):
 	current_angle += rotation_speed * direction * delta;
-	current_angle = fmod(current_angle, 2 * PI)
 	position = MyUtils.get_position_about_point(_center, _radius, current_angle);
 	rotation = current_angle;

@@ -24,13 +24,8 @@ signal lock_won(beaten_lock_difficulty: int, new_speed: float);
 		return lock_speed;
 
 @export_group("Coin Spawn Distance")
-@export var first_coin_spawn_distance: float = PI;
-@export var min_coin_spawn_distance: float = PI / 3:
-	set(spawn_distance):
-		min_coin_spawn_distance = spawn_distance;
-		# $lock_body/track/coin_spawner.min_coin_spawn_distance = min_coin_spawn_distance;
-	get:
-		return min_coin_spawn_distance;
+@export var first_spawn_distance: float = 180;
+@export var min_spawn_distance: float = 60;
 
 @onready var current_difficulty: int = lock_difficulty:
 	set(difficulty):
@@ -63,43 +58,46 @@ func _ready():
 	current_difficulty = lock_difficulty;
 	
 	indicator.initialize(center, radius, trackWidth);
+	arc_donut.start_angle = indicator.current_angle + first_spawn_distance + 90;
 	arc_donut.reverse = indicator.direction == -1;
 	start_angle = arc_donut.get_start_angle();
 	end_angle = arc_donut.get_end_angle();
 	print('end_angle ', end_angle)
-	# indicator.create_coin(first_coin_spawn_distance);
 
 func _process(_delta):
 	var angle = rad_to_deg(indicator.current_angle) + 90;
+	var current_arc = arc_donut.get_arc_name_at(angle);
 
 	if Input.is_action_just_pressed("invert"):
 		indicator.direction *= -1;
 
 		print("angle ", angle);
-		var arc = arc_donut.get_arc_name_at(angle);
-		print("arc ", arc);
-		if arc:
+		print("arc ", current_arc);
+		if current_arc:
 			_on_coin_collected();
 
 	if was_between:
 		if not arc_donut.get_arc_name_at(angle):
 			_on_lose();
-	else:
-		if arc_donut.get_arc_name_at(angle):
+	elif arc_donut.get_arc_name_at(angle):
 			was_between = true;
 
 func _on_coin_collected():
 	if current_difficulty <= 0:
 		return;
 	current_difficulty -= 1;
+	was_between = false;
 
 	if current_difficulty == 0:
 		_on_win();
 	else:
-		var angle = randf_range(0, 359.9);
+		var angle = rad_to_deg(indicator.current_angle) + 90;
+		printt("angle", angle, angle + min_spawn_distance, angle + 360 - min_spawn_distance)
 		arc_donut.reverse = indicator.direction == -1;
-		arc_donut.start_angle = angle;
-		was_between = false;
+		arc_donut.start_angle = randf_range(
+			angle + min_spawn_distance,
+			angle + 360 - min_spawn_distance
+		);
 
 func _on_win():
 	var old_direction = indicator.direction;
@@ -114,8 +112,9 @@ func _on_win():
 
 	lock_won.emit(lock_difficulty, lock_speed);
 
-	# indicator.create_coin(first_coin_spawn_distance);
 	indicator.direction = old_direction;
+	arc_donut.start_angle = indicator.current_angle + first_spawn_distance + 90;
+	arc_donut.reverse = indicator.direction == -1;
 
 func _on_lose():
 	indicator.direction = 0;

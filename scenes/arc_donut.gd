@@ -9,7 +9,13 @@ class_name ArcDonut;
 @export_color_no_alpha var bg_color: Color = Color.html("#0A1719");
 
 @export_category("Arcs")
-@export_range(0, 360) var start_angle: float = 0;
+@export_range(0, 360) var start_angle: float = 0:
+	set(angle):
+		if angle < 0:
+			angle = 360 + angle;
+		start_angle = fmod(angle, 360);
+	get:
+		return start_angle;
 @export var arc_names: Array[String] = ["yellow", "orange", "red"];
 @export var angle_sizes: Array[float] = [21.6, 10.8, 5.4];
 @export var colors: Array[Color] = [Color.html("#EE9B00"), Color.html("#CA6702"), Color.html("#AE2012")];
