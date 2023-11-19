@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/lock.gd" id="1_tnfkh"]
 [ext_resource type="PackedScene" uid="uid://ch5418xgdqmbj" path="res://scenes/shackle.tscn" id="3_70kar"]
-[ext_resource type="PackedScene" uid="uid://bpy1hd0buwsk4" path="res://scenes/track.tscn" id="4_mem34"]
+[ext_resource type="PackedScene" uid="uid://bpy1hd0buwsk4" path="res://scenes/indicator.tscn" id="4_mem34"]
 [ext_resource type="AudioStream" uid="uid://lfiu78bu6l4l" path="res://assets/unlock.mp3" id="4_r64xg"]
 [ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="6_bq63j"]
 [ext_resource type="PackedScene" uid="uid://drgb3ug0av0u8" path="res://scenes/arc_donut.tscn" id="8_pripq"]
@@ -165,8 +165,10 @@ color = Color(0.054902, 0.164706, 0.168627, 1)
 position = Vector2(588, 1375)
 inner_to_outer_ratio = 0.72
 outer_radius = 457.464
+start_angle = 350.0
+reverse = true
 
-[node name="track" parent="lock_body" instance=ExtResource("4_mem34")]
+[node name="indicator" parent="lock_body" instance=ExtResource("4_mem34")]
 rotation_speed = 2.75
 
 [node name="countdown" type="Label" parent="lock_body"]
@@ -197,6 +199,3 @@ libraries = {
 stream = ExtResource("4_r64xg")
 volume_db = -15.0
 pitch_scale = 3.0
-
-[connection signal="coin_collected" from="lock_body/track" to="." method="_on_coin_collected"]
-[connection signal="lost" from="lock_body/track" to="." method="_on_lose"]

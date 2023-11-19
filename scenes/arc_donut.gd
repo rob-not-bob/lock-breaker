@@ -16,8 +16,7 @@ class_name ArcDonut;
 @export var reverse: bool = false;
 
 func _process(_delta):
-	if Engine.is_editor_hint():
-		queue_redraw();
+	queue_redraw();
 
 func _draw_arc_donut_about_point(center: Vector2, from_angle: float, to_angle: float, color: Color):
 	var points_arc = PackedVector2Array()
@@ -35,16 +34,19 @@ func _draw_arc_donut_about_point(center: Vector2, from_angle: float, to_angle: f
 
 ## Returns the name of the arc at _deg
 func get_arc_name_at(_deg: float):
-	var deg = fmod(_deg, 360);
-	var arc_start = start_angle;
+	var deg = _deg;
+	if _deg < 0:
+		deg *= -1;
+	deg = fmod(_deg, 360);
 
-	# If reverse manipulate deg to be relative to start_angle so
-	# our code still works
+	# Manipulate deg to be relative to start_angle so
+	# our code still works no matter rotation
+	deg = deg - start_angle;
+	if deg < 0:
+		deg = 360 + deg;
+
+	var arc_start = 0;
 	if reverse:
-		deg = deg - start_angle;
-		if deg < 0:
-			deg = 360 + deg;
-
 		var sum = 0;
 		for angle in angle_sizes:
 			sum += angle;
@@ -62,11 +64,15 @@ func get_arc_name_at(_deg: float):
 		if deg <= total_angle:
 			return arc_names[index];
 
+	# Should never be called
 	return null;
 
 
 
-#func _ready():
+func _ready():
+	print("281: ", get_arc_name_at(281)); # null)
+	print("351: ", get_arc_name_at(351)); # yellow)
+	print("5: ", get_arc_name_at(5)); # yellow)
 #	print("0: ", get_arc_name_at(0)); # yellow
 #	print("360: ", get_arc_name_at(360)); # yellow
 #	print("10: ", get_arc_name_at(10)); # yellow

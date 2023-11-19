@@ -4,14 +4,13 @@ signal lock_lost(best_score: int);
 signal lock_won(beaten_lock_difficulty: int, new_speed: float);
 
 @onready var arc_donut: ArcDonut = $lock_body/arc_donut;
-@onready var track: Track = $lock_body/track;
+@onready var indicator: Indicator = $lock_body/indicator;
 @onready var countdown: Label = $lock_body/countdown;
 
 @export_group("Lock Difficulty")
-@export var lock_difficulty: int = 1:
+@export var lock_difficulty: int = 10:
 	set(difficulty):
 		lock_difficulty = difficulty;
-		current_difficulty = lock_difficulty;
 	get:
 		return lock_difficulty;
 
@@ -20,7 +19,7 @@ signal lock_won(beaten_lock_difficulty: int, new_speed: float);
 @export var lock_speed: float = 2.0:
 	set(speed):
 		lock_speed = min(speed, max_lock_speed);
-		track.rotation_speed = lock_speed;
+		indicator.rotation_speed = lock_speed;
 	get:
 		return lock_speed;
 
@@ -29,11 +28,11 @@ signal lock_won(beaten_lock_difficulty: int, new_speed: float);
 @export var min_coin_spawn_distance: float = PI / 3:
 	set(spawn_distance):
 		min_coin_spawn_distance = spawn_distance;
-		$lock_body/track/coin_spawner.min_coin_spawn_distance = min_coin_spawn_distance;
+		# $lock_body/track/coin_spawner.min_coin_spawn_distance = min_coin_spawn_distance;
 	get:
 		return min_coin_spawn_distance;
 
-var current_difficulty: int = lock_difficulty:
+@onready var current_difficulty: int = lock_difficulty:
 	set(difficulty):
 		current_difficulty = difficulty;
 		countdown.text = str(current_difficulty);
@@ -57,9 +56,25 @@ func _ready():
 	var inner_radius = arc_donut.outer_radius * arc_donut.inner_to_outer_ratio;
 	var trackWidth = (arc_donut.outer_radius - inner_radius) / 2;
 	var radius = (inner_radius + arc_donut.outer_radius) / 2;
+	current_difficulty = lock_difficulty;
 	
-	track.initialize(center, radius, trackWidth);
-	track.create_coin(first_coin_spawn_distance);
+	indicator.initialize(center, radius, trackWidth);
+	arc_donut.reverse = indicator.direction == -1;
+	# indicator.create_coin(first_coin_spawn_distance);
+
+func _process(_delta):
+	if Input.is_action_just_pressed("invert"):
+		indicator.direction *= -1;
+
+		var angle = rad_to_deg(indicator.current_angle) + 90;
+		if angle < 0:
+			angle += 360
+		angle = fmod(angle, 360);
+		print("angle ", angle);
+		var arc = arc_donut.get_arc_name_at(angle);
+		print("arc ", arc);
+		if arc:
+			_on_coin_collected();
 
 func _on_coin_collected():
 	if current_difficulty <= 0:
@@ -69,11 +84,13 @@ func _on_coin_collected():
 	if current_difficulty == 0:
 		_on_win();
 	else:
-		track.create_coin();
+		var angle = randf_range(0, 359.9);
+		arc_donut.reverse = indicator.direction == -1;
+		arc_donut.start_angle = angle;
 
 func _on_win():
-	var old_direction = track.direction;
-	track.direction = 0;
+	var old_direction = indicator.direction;
+	indicator.direction = 0;
 	
 	await unlock();
 	await lock();
@@ -84,8 +101,8 @@ func _on_win():
 
 	lock_won.emit(lock_difficulty, lock_speed);
 
-	track.create_coin(first_coin_spawn_distance);
-	track.direction = old_direction;
+	# indicator.create_coin(first_coin_spawn_distance);
+	indicator.direction = old_direction;
 
 func _on_lose():
 	await lose();
