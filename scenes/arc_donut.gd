@@ -47,16 +47,12 @@ func _draw_arc_donut_about_point(center: Vector2, from_angle: float, to_angle: f
 
 ## Returns the name of the arc at _deg
 func get_arc_name_at(_deg: float):
-	var deg = _deg;
-	if _deg < 0:
-		deg *= -1;
-	deg = fmod(_deg, 360);
-
 	# Manipulate deg to be relative to start_angle so
 	# our code still works no matter rotation
-	deg = deg - start_angle;
+	var deg = _deg - start_angle;
+	deg = fmod(deg, 360);
 	if deg < 0:
-		deg = 360 + deg;
+		deg += 360;
 
 	var arc_start = 0;
 	if reverse:

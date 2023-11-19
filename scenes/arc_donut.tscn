@@ -5,7 +5,8 @@
 [node name="ArcDonut" type="Node2D"]
 script = ExtResource("1_8oqt5")
 number_of_points = 64
-inner_to_outer_ratio = null
 outer_radius = 496.482
 bg_color = Color(0.0392157, 0.0901961, 0.0980392, 1)
+start_angle = 272.628
 colors = Array[Color]([Color(0.933333, 0.607843, 0, 1), Color(0.792157, 0.403922, 0.00784314, 1), Color(0.682353, 0.12549, 0.0705882, 1)])
+reverse = true

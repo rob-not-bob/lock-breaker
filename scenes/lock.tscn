@@ -163,9 +163,7 @@ color = Color(0.054902, 0.164706, 0.168627, 1)
 
 [node name="arc_donut" parent="lock_body" instance=ExtResource("8_pripq")]
 position = Vector2(588, 1375)
-inner_to_outer_ratio = 0.72
 outer_radius = 457.464
-reverse = true
 
 [node name="indicator" parent="lock_body" instance=ExtResource("4_mem34")]
 rotation_speed = 2.75

@@ -58,15 +58,17 @@ func _ready():
 	current_difficulty = lock_difficulty;
 	
 	indicator.initialize(center, radius, trackWidth);
-	arc_donut.start_angle = indicator.current_angle + first_spawn_distance + 90;
-	arc_donut.reverse = indicator.direction == -1;
-	start_angle = arc_donut.get_start_angle();
-	end_angle = arc_donut.get_end_angle();
-	print('end_angle ', end_angle)
+	indicator.current_angle = deg_to_rad(arc_donut.start_angle + first_spawn_distance - 90);
+	indicator.direction = -1 if arc_donut.reverse else 1;
+	was_between = false;
 
 func _process(_delta):
-	if indicator.direction == 0:
-		return;
+	if Input.is_action_just_pressed("pause"):
+		indicator.direction = 0 if indicator.direction != 0 else 1;
+	if Input.is_key_pressed(KEY_LEFT):
+		indicator.current_angle -= 1;
+	if Input.is_key_pressed(KEY_RIGHT):
+		indicator.current_angle += 1;
 
 	var angle = rad_to_deg(indicator.current_angle) + 90;
 	var current_arc = arc_donut.get_arc_name_at(angle);
@@ -74,10 +76,13 @@ func _process(_delta):
 	if Input.is_action_just_pressed("invert"):
 		indicator.direction *= -1;
 
-		print("angle ", angle);
-		print("arc ", current_arc);
+		printt("angle", "arc", "d_angle");
+		printt(angle, current_arc, arc_donut.start_angle);
 		if current_arc:
 			_on_coin_collected(current_arc);
+
+	if indicator.direction == 0:
+		return;
 
 	if was_between:
 		if not arc_donut.get_arc_name_at(angle):
@@ -94,7 +99,6 @@ func _on_coin_collected(current_arc):
 	was_between = false;
 
 	var angle = rad_to_deg(indicator.current_angle) + 90;
-	printt("angle", angle, angle + min_spawn_distance, angle + 360 - min_spawn_distance)
 	arc_donut.reverse = indicator.direction == -1;
 	arc_donut.start_angle = randf_range(
 		angle + min_spawn_distance,

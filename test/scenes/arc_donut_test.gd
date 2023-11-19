@@ -68,4 +68,13 @@ func test_get_arc_name_at_across_boundary() -> void:
 	assert_str(donut.get_arc_name_at(351)).is_equal("yellow");
 	assert_str(donut.get_arc_name_at(5)).is_equal("yellow");
 
+	# Edge cases found while running game
+	donut.reverse = true;
+	donut.start_angle = 344.560966445396;
+	assert_str(donut.get_arc_name_at(-43.2126873679162)).is_equal("orange");
+
+	donut.reverse = true;
+	donut.start_angle = 272.628439891698;
+	assert_str(donut.get_arc_name_at(-97.6436779053442)).is_equal("yellow");
+
 	donut.free();
