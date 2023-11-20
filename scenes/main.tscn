@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://cfxsdxfsx0y1d"]
+[gd_scene load_steps=6 format=3 uid="uid://cfxsdxfsx0y1d"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_1yv36"]
 [ext_resource type="PackedScene" uid="uid://dxo2ec4gcr203" path="res://scenes/lock.tscn" id="1_ws75f"]
 [ext_resource type="Shader" path="res://scenes/main.gdshader" id="3_5ecpm"]
+[ext_resource type="PackedScene" uid="uid://bdhrkiy3lgcxv" path="res://scenes/screens/game_over_screen.tscn" id="4_br3or"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ayhpd"]
 shader = ExtResource("3_5ecpm")
@@ -10,6 +11,7 @@ shader_parameter/PULSE_SIZE = 0.05
 shader_parameter/BPM = 120.0
 
 [node name="UI" type="CanvasLayer"]
+script = ExtResource("1_1yv36")
 
 [node name="bg" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -35,7 +37,6 @@ transparent_bg = true
 handle_input_locally = false
 size = Vector2i(1176, 2142)
 render_target_update_mode = 4
-script = ExtResource("1_1yv36")
 
 [node name="lock" parent="CenterContainer/SubViewportContainer/SubViewport" instance=ExtResource("1_ws75f")]
 position = Vector2(0, -175)
@@ -49,5 +50,9 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 1, 1, 0)
 
-[connection signal="lock_lost" from="CenterContainer/SubViewportContainer/SubViewport/lock" to="CenterContainer/SubViewportContainer/SubViewport" method="_on_lose"]
-[connection signal="lock_won" from="CenterContainer/SubViewportContainer/SubViewport/lock" to="CenterContainer/SubViewportContainer/SubViewport" method="_on_lock_beat"]
+[node name="TryAgain" parent="." instance=ExtResource("4_br3or")]
+visible = false
+
+[connection signal="lock_lost" from="CenterContainer/SubViewportContainer/SubViewport/lock" to="." method="_on_lose"]
+[connection signal="lock_won" from="CenterContainer/SubViewportContainer/SubViewport/lock" to="." method="_on_lock_beat"]
+[connection signal="try_again_clicked" from="TryAgain" to="." method="_on_try_again_clicked"]

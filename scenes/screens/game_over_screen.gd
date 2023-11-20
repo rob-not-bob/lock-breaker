@@ -1,14 +1,13 @@
-extends CanvasLayer
+extends Control
 
-var best_score = 0;
-func _ready():
-	best_score = SceneSwitcher.get_param("best_score", 0);
-	if not best_score:
-		best_score = 0;
+signal try_again_clicked;
+
+func set_scores(score: float, best_score: float):
 	$VBoxContainer/BestScore.text = "Best Score: " + str(best_score);
+	$VBoxContainer/Score.text = "Score: " + str(score);
 
-func _on_quit_button_up():
+func _on_quit_pressed():
 	get_tree().quit();
 
-func _on_try_again_button_up():
-	SceneSwitcher.change_scene("res://scenes/main.tscn", {"use_game_data": true });
+func _on_try_again_pressed():
+	try_again_clicked.emit();

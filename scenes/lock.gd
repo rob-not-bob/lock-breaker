@@ -24,7 +24,7 @@ signal lock_won(beaten_lock_difficulty: int, new_speed: float);
 		return lock_speed;
 
 @export_group("Coin Spawn Distance")
-@export var first_spawn_distance: float = 180;
+@export var first_spawn_distance: float = 90;
 @export var min_spawn_distance: float = 60;
 
 @onready var current_difficulty: int = lock_difficulty:
@@ -35,8 +35,15 @@ signal lock_won(beaten_lock_difficulty: int, new_speed: float);
 		return current_difficulty;
 
 var was_between: bool = false;
-var start_angle: float = 0;
-var end_angle: float = 0;
+
+func reset() -> void:
+	current_difficulty = 0;
+	arc_donut.start_angle = randf_range(0, 360);
+	arc_donut.reverse = false;
+	indicator.current_angle = deg_to_rad(arc_donut.start_angle + first_spawn_distance - 90);
+	indicator.direction = -1 if arc_donut.reverse else 1;
+	lock_speed = 2.0;
+	was_between = false;
 
 func lock() -> Signal:
 	# $AnimationPlayer.play_backwards("unlock");
@@ -80,6 +87,9 @@ func _process(_delta):
 		printt(angle, current_arc, arc_donut.start_angle);
 		if current_arc:
 			_on_coin_collected(current_arc);
+			lock_speed = 2.0 + 0.125 * int(current_difficulty / 5);
+		else:
+			_on_lose();
 
 	if indicator.direction == 0:
 		return;
@@ -92,6 +102,8 @@ func _process(_delta):
 
 func _on_coin_collected(current_arc):
 	if current_arc == "red":
+		current_difficulty += 3;
+	elif current_arc == "orange":
 		current_difficulty += 2;
 	else:
 		current_difficulty += 1;
@@ -125,4 +137,4 @@ func _on_coin_collected(current_arc):
 func _on_lose():
 	indicator.direction = 0;
 	# await lose();
-	# lock_lost.emit(lock_difficulty);
+	lock_lost.emit(current_difficulty);
