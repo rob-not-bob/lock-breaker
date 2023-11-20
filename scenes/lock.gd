@@ -2,6 +2,7 @@ extends Node2D
 
 signal lock_lost(best_score: int);
 signal lock_won(beaten_lock_difficulty: int, new_speed: float);
+signal crit;
 
 @onready var arc_donut: ArcDonut = $lock_body/arc_donut;
 @onready var indicator: Indicator = $lock_body/indicator;
@@ -13,6 +14,7 @@ signal lock_won(beaten_lock_difficulty: int, new_speed: float);
 		lock_difficulty = difficulty;
 	get:
 		return lock_difficulty;
+
 
 @export_group("Lock Speed")
 @export var max_lock_speed: float = 7.0;
@@ -31,6 +33,12 @@ signal lock_won(beaten_lock_difficulty: int, new_speed: float);
 	set(difficulty):
 		current_difficulty = max(0, difficulty);
 		countdown.text = str(current_difficulty);
+		if current_difficulty < 100:
+			countdown.add_theme_font_size_override("font_size", 260);
+		elif current_difficulty >= 100:
+			countdown.add_theme_font_size_override("font_size", 190);
+		elif current_difficulty >= 1000:
+			countdown.add_theme_font_size_override("font_size", 145);
 	get:
 		return current_difficulty;
 
@@ -77,6 +85,9 @@ func _process(_delta):
 	if Input.is_key_pressed(KEY_RIGHT):
 		indicator.current_angle += deg_to_rad(1);
 
+	if indicator.direction == 0:
+		return;
+
 	var angle = rad_to_deg(indicator.current_angle) + 90;
 	var current_arc = arc_donut.get_arc_name_at(angle);
 
@@ -91,9 +102,6 @@ func _process(_delta):
 		else:
 			_on_lose();
 
-	if indicator.direction == 0:
-		return;
-
 	if was_between:
 		if not arc_donut.get_arc_name_at(angle):
 			_on_lose();
@@ -103,6 +111,7 @@ func _process(_delta):
 func _on_coin_collected(current_arc):
 	if current_arc == "red":
 		current_difficulty += 3;
+		crit.emit();
 	elif current_arc == "orange":
 		current_difficulty += 2;
 	else:

@@ -40,31 +40,30 @@ alignment = 1
 metadata/_edit_lock_ = true
 
 [node name="GameOver" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 256)
 layout_mode = 2
 theme = ExtResource("2_bnhkj")
 theme_override_font_sizes/font_size = 100
 text = "Game Over"
 horizontal_alignment = 1
-vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Score" type="Label" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 250)
+custom_minimum_size = Vector2(0, 119)
 layout_mode = 2
 theme = ExtResource("2_bnhkj")
 text = "Score: 0"
 horizontal_alignment = 1
-vertical_alignment = 2
+vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="BestScore" type="Label" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 250)
+custom_minimum_size = Vector2(0, 214)
 layout_mode = 2
 theme = ExtResource("2_bnhkj")
 theme_override_font_sizes/font_size = 44
 text = "Best Score: 0"
 horizontal_alignment = 1
-vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="TryAgain" type="Button" parent="VBoxContainer"]
@@ -79,5 +78,5 @@ layout_mode = 2
 theme = ExtResource("2_bnhkj")
 text = "Quit"
 
-[connection signal="pressed" from="VBoxContainer/TryAgain" to="." method="_on_try_again_pressed"]
-[connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="button_up" from="VBoxContainer/TryAgain" to="." method="_on_try_again_button_up"]
+[connection signal="button_up" from="VBoxContainer/Quit" to="." method="_on_quit_button_up"]
