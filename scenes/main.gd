@@ -8,7 +8,8 @@ var best_score: int = 0:
 @onready var lock = $CenterContainer/SubViewportContainer/SubViewport/lock;
 
 func show_game_over_screen(score: int):
-	$TryAgain.set_scores(score, best_score)
+	$MarginContainer.hide();
+	$TryAgain.set_scores(score, best_score);
 	$AnimationPlayer.play("screen_shake");
 	await $AnimationPlayer.animation_finished
 	$TryAgain.show();
@@ -20,6 +21,8 @@ func load_game():
 
 func _ready():
 	load_game();
+	$MarginContainer.hide();
+	lock.indicator.direction = 0;
 
 func _on_lose(score: int):
 	if score > best_score:
@@ -31,21 +34,29 @@ func _on_lose(score: int):
 
 	show_game_over_screen(score);
 
-
-func _on_try_again_clicked():
+func _start_game():
 	lock.reset();
 	$AnimationPlayer.play("RESET");
 	$TryAgain.hide();
+	$StartScreen.hide();
+	$MarginContainer.show();
 
+func _on_try_again_clicked():
+	_start_game();
 
 func _on_lock_crit():
 	$AnimationPlayer.play("crit");
 
+func _on_start_button_clicked():
+	_start_game();
 
-func _on_mute_button_up():
-	var master = AudioServer.get_bus_index("Master");
-	var music = AudioServer.get_bus_index("Music");
-	var muted = AudioServer.is_bus_mute(master);
+func _on_mute_button_clicked(isMuted):
+	$shader.material.set_shader_parameter("PULSE_SIZE", 0.0 if isMuted else 0.05);
 
-	AudioServer.set_bus_mute(master, !muted);
-	AudioServer.set_bus_mute(music, !muted);
+func _on_credit_button_clicked():
+	$StartScreen.hide();
+	$credits.show();
+
+func _on_credits_back_clicked():
+	$credits.hide();
+	$StartScreen.show();

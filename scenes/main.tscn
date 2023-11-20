@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cfxsdxfsx0y1d"]
+[gd_scene load_steps=15 format=3 uid="uid://cfxsdxfsx0y1d"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_1yv36"]
 [ext_resource type="PackedScene" uid="uid://dxo2ec4gcr203" path="res://scenes/lock.tscn" id="1_ws75f"]
@@ -7,7 +7,8 @@
 [ext_resource type="Script" path="res://scenes/RandPitch.gd" id="3_6yysx"]
 [ext_resource type="PackedScene" uid="uid://bdhrkiy3lgcxv" path="res://scenes/screens/game_over_screen.tscn" id="4_br3or"]
 [ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="6_0eh8q"]
-[ext_resource type="Texture2D" uid="uid://y1kwvmakou2w" path="res://assets/audioOn.png" id="7_7of7e"]
+[ext_resource type="PackedScene" uid="uid://c0g4kiq87bjnv" path="res://scenes/screens/start_screen.tscn" id="9_8e03d"]
+[ext_resource type="PackedScene" uid="uid://caqopysoe54od" path="res://credits.tscn" id="9_sdku8"]
 
 [sub_resource type="Animation" id="Animation_mofnf"]
 resource_name = "screen_shake"
@@ -22,17 +23,6 @@ tracks/0/keys = {
 "points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0.07, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0, 0.2, 0.8)
 }
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("shader:material:shader_parameter/PULSE_SIZE")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
 
 [sub_resource type="Animation" id="Animation_eqavf"]
 length = 0.001
@@ -45,17 +35,6 @@ tracks/0/loop_wrap = true
 tracks/0/keys = {
 "handle_modes": PackedInt32Array(0),
 "points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("shader:material:shader_parameter/PULSE_SIZE")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.05, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0)
 }
 
@@ -111,10 +90,10 @@ libraries = {
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_01ihg")
-volume_db = -15.0
+volume_db = -16.0
 script = ExtResource("3_6yysx")
-lowest_pitch = 0.7
-highest_pitch = 1.2
+lowest_pitch = 0.75
+highest_pitch = 1.15
 
 [node name="bg" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -164,7 +143,6 @@ theme = ExtResource("6_0eh8q")
 theme_override_constants/margin_left = 35
 theme_override_constants/margin_top = 35
 theme_override_constants/margin_right = 35
-metadata/_edit_use_anchors_ = true
 
 [node name="BestScore" type="Label" parent="MarginContainer"]
 custom_minimum_size = Vector2(0, 73)
@@ -177,17 +155,19 @@ text = "Best Score: 0"
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="Mute" type="TextureButton" parent="MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-texture_normal = ExtResource("7_7of7e")
-
 [node name="TryAgain" parent="." instance=ExtResource("4_br3or")]
+visible = false
+
+[node name="StartScreen" parent="." instance=ExtResource("9_8e03d")]
+
+[node name="credits" parent="." instance=ExtResource("9_sdku8")]
 visible = false
 
 [connection signal="crit" from="CenterContainer/SubViewportContainer/SubViewport/lock" to="." method="_on_lock_crit"]
 [connection signal="lock_lost" from="CenterContainer/SubViewportContainer/SubViewport/lock" to="." method="_on_lose"]
 [connection signal="lock_won" from="CenterContainer/SubViewportContainer/SubViewport/lock" to="." method="_on_lock_beat"]
-[connection signal="button_up" from="MarginContainer/Mute" to="." method="_on_mute_button_up"]
 [connection signal="try_again_clicked" from="TryAgain" to="." method="_on_try_again_clicked"]
+[connection signal="credit_button_clicked" from="StartScreen" to="." method="_on_credit_button_clicked"]
+[connection signal="mute_button_clicked" from="StartScreen" to="." method="_on_mute_button_clicked"]
+[connection signal="start_button_clicked" from="StartScreen" to="." method="_on_start_button_clicked"]
+[connection signal="on_back_clicked" from="credits" to="." method="_on_credits_back_clicked"]

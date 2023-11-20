@@ -1,0 +1,61 @@
+[gd_scene load_steps=3 format=3 uid="uid://caqopysoe54od"]
+
+[ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="1_1twrc"]
+[ext_resource type="Script" path="res://credits.gd" id="1_s85r1"]
+
+[node name="credits" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_s85r1")
+
+[node name="bg" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.501961)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 5.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_top = 500
+theme_override_constants/margin_right = 80
+theme_override_constants/margin_bottom = 80
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Attribution" type="Label" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 700)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_1twrc")
+theme_override_font_sizes/font_size = 39
+text = "Music:  Cyberpunk Computer Game | IDRA by Alex-Productions | https://onsound.eu/
+Music promoted by https://www.chosic.com/free-music/all/
+Creative Commons CC BY 3.0
+https://creativecommons.org/licenses/by/3.0/
+
+"
+autowrap_mode = 2
+
+[node name="Back" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+theme = ExtResource("1_1twrc")
+text = "Back"
+
+[connection signal="button_up" from="MarginContainer/VBoxContainer/Back" to="." method="_on_back_button_up"]

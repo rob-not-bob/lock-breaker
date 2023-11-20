@@ -72,11 +72,4 @@ layout_mode = 2
 theme = ExtResource("2_bnhkj")
 text = "Try Again"
 
-[node name="Quit" type="Button" parent="VBoxContainer"]
-custom_minimum_size = Vector2(0, 150)
-layout_mode = 2
-theme = ExtResource("2_bnhkj")
-text = "Quit"
-
 [connection signal="button_up" from="VBoxContainer/TryAgain" to="." method="_on_try_again_button_up"]
-[connection signal="button_up" from="VBoxContainer/Quit" to="." method="_on_quit_button_up"]
