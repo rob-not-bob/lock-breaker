@@ -16,3 +16,4 @@ mono_crash.*.json
 
 android/build/*
 !android/build/AndroidManifest.xml
+.idea
