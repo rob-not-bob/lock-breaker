@@ -35,6 +35,7 @@ func _on_lose(score: int):
 	show_game_over_screen(score);
 
 func _start_game():
+	# Ads.load_banner();
 	lock.reset();
 	$AnimationPlayer.play("RESET");
 	$TryAgain.hide();

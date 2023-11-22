@@ -21,6 +21,7 @@ _Utils="*res://scripts/Utils.gd"
 SceneSwitcher="*res://scripts/scene_switcher.gd"
 GameSaver="*res://scripts/game_saver.gd"
 Bgm="*res://bgm.tscn"
+Ads="res://scripts/ads.gd"
 
 [display]
 

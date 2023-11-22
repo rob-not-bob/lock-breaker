@@ -4,7 +4,7 @@
     package="com.godot.game"
     android:versionCode="1"
     android:versionName="1.0"
-    android:installLocation="auto" >
+    android:installLocation="auto">
 
     <supports-screens
         android:smallScreens="true"
@@ -24,7 +24,7 @@
         android:isGame="true"
         android:hasFragileUserData="false"
         android:requestLegacyExternalStorage="false"
-        tools:ignore="GoogleAppIndexingWarning" >
+        tools:ignore="GoogleAppIndexingWarning">
 
         <!-- Records the version of the Godot editor used for building -->
         <meta-data
@@ -41,13 +41,17 @@
             android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|density|keyboard|navigation|screenLayout|uiMode"
             android:resizeableActivity="false"
-            tools:ignore="UnusedAttribute" >
+            tools:ignore="UnusedAttribute">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3502216226418364~9827332675" />
 
     </application>
 
