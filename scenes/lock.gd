@@ -53,6 +53,17 @@ func reset() -> void:
 	lock_speed = 2.0;
 	was_between = false;
 
+func set_theme(theme) -> void:
+	arc_donut.bg_color = theme.donut.bg;
+	arc_donut.colors.clear();
+	arc_donut.colors.append_array(theme.donut.arcs);
+
+	countdown.modulate = theme.countdown;
+	indicator.modulate = theme.indicator;
+
+	$shackle.color = theme.shackle;
+	$shackle.queue_redraw();
+
 func lock() -> Signal:
 	# $AnimationPlayer.play_backwards("unlock");
 	return $AnimationPlayer.animation_finished;

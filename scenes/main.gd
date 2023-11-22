@@ -21,6 +21,7 @@ func load_game():
 
 func _ready():
 	load_game();
+	set_theme();
 	$MarginContainer.hide();
 	lock.indicator.direction = 0;
 
@@ -34,6 +35,11 @@ func _on_lose(score: int):
 
 	show_game_over_screen(score);
 
+func set_theme():
+	var theme = Themes.get_random_theme();
+	$bg.color = theme.bg;
+	lock.set_theme(theme);
+
 func _start_game():
 	# Ads.load_banner();
 	lock.reset();
@@ -43,6 +49,7 @@ func _start_game():
 	$MarginContainer.show();
 
 func _on_try_again_clicked():
+	set_theme();
 	_start_game();
 
 func _on_lock_crit():
