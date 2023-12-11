@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://caqopysoe54od"]
 
 [ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="1_1twrc"]
-[ext_resource type="Script" path="res://credits.gd" id="1_s85r1"]
+[ext_resource type="Script" path="res://scenes/screens/credits.gd" id="1_s85r1"]
 
 [node name="credits" type="Control"]
 layout_mode = 3
@@ -50,7 +50,7 @@ Creative Commons CC BY 3.0
 https://creativecommons.org/licenses/by/3.0/
 
 "
-autowrap_mode = 2
+autowrap_mode = 1
 
 [node name="Back" type="Button" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 150)

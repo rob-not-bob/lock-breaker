@@ -44,6 +44,7 @@ theme_override_constants/separation = 20
 alignment = 1
 
 [node name="PopTheLock" type="Label" parent="MarginContainer/VBoxContainer"]
+modulate = Color(1, 1, 27.81, 1)
 custom_minimum_size = Vector2(0, 500)
 layout_mode = 2
 theme = ExtResource("2_j0f74")

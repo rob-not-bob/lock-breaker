@@ -24,17 +24,19 @@ func draw_shackle(center: Vector2):
 	points_arc.push_back(center + Vector2(cos(point), sin(point)) * inner_radius + shackle_offset);
 	points_arc.push_back(center + Vector2(cos(point), sin(point)) * outer_radius + shackle_offset);
 
+	var draw_arc_point := func(index: int, radius: float) -> void:
+		var angle_point = deg_to_rad(from_angle + index * (to_angle - from_angle) / float(number_of_points) - 90);
+		points_arc.push_back(center + Vector2(cos(angle_point), sin(angle_point)) * radius);
+
 	for i in range(number_of_points + 1):
-		var angle_point = deg_to_rad(from_angle + i * (to_angle - from_angle) / number_of_points - 90);
-		points_arc.push_back(center + Vector2(cos(angle_point), sin(angle_point)) * outer_radius);
+		draw_arc_point.call(i, outer_radius);
 
 	var point2 = deg_to_rad(to_angle - 90);
 	points_arc.push_back(center + Vector2(cos(point2), sin(point2)) * outer_radius + shackle_offset);
 	points_arc.push_back(center + Vector2(cos(point2), sin(point2)) * inner_radius + shackle_offset);
 
 	for i in range(number_of_points, -1, -1):
-		var angle_point = deg_to_rad(from_angle + i * (to_angle - from_angle) / number_of_points - 90);
-		points_arc.push_back(center + Vector2(cos(angle_point), sin(angle_point)) * inner_radius);
+		draw_arc_point.call(i, inner_radius);
 
 	draw_colored_polygon(points_arc, color)
 

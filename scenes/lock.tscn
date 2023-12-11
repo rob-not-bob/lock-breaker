@@ -150,10 +150,12 @@ _data = {
 }
 
 [node name="lock" type="Node2D"]
+position = Vector2(-1, -2)
 script = ExtResource("1_tnfkh")
+metadata/_edit_vertical_guides_ = [588.0]
 
 [node name="shackle" parent="." instance=ExtResource("3_70kar")]
-position = Vector2(588, 857)
+position = Vector2(594, 841)
 inner_to_outer_ratio = 0.55
 outer_radius = 281.302
 shackle_length = 186.486
@@ -172,6 +174,7 @@ reverse = false
 rotation_speed = 2.75
 
 [node name="countdown" type="Label" parent="lock_body"]
+modulate = Color(1, 1, 12, 1)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5

@@ -48,7 +48,7 @@ func reset() -> void:
 	current_difficulty = 0;
 	arc_donut.start_angle = randf_range(0, 360);
 	arc_donut.reverse = false;
-	indicator.current_angle = deg_to_rad(arc_donut.start_angle + first_spawn_distance - 90);
+	indicator.rotation = deg_to_rad(arc_donut.start_angle + first_spawn_distance - 90);
 	indicator.direction = -1 if arc_donut.reverse else 1;
 	lock_speed = 2.0;
 	was_between = false;
@@ -84,7 +84,7 @@ func _ready():
 	current_difficulty = lock_difficulty;
 	
 	indicator.initialize(center, radius, trackWidth);
-	indicator.current_angle = deg_to_rad(arc_donut.start_angle + first_spawn_distance - 90);
+	indicator.rotation = deg_to_rad(arc_donut.start_angle + first_spawn_distance - 90);
 	indicator.direction = -1 if arc_donut.reverse else 1;
 	was_between = false;
 
@@ -92,14 +92,14 @@ func _process(_delta):
 	if Input.is_action_just_pressed("pause"):
 		indicator.direction = 0 if indicator.direction != 0 else 1;
 	if Input.is_key_pressed(KEY_LEFT):
-		indicator.current_angle -= deg_to_rad(1);
+		indicator.rotation -= deg_to_rad(1);
 	if Input.is_key_pressed(KEY_RIGHT):
-		indicator.current_angle += deg_to_rad(1);
+		indicator.rotation += deg_to_rad(1);
 
 	if indicator.direction == 0:
 		return;
 
-	var angle = rad_to_deg(indicator.current_angle) + 90;
+	var angle = rad_to_deg(indicator.rotation) + 90;
 	var current_arc = arc_donut.get_arc_name_at(angle);
 
 	if Input.is_action_just_pressed("invert"):
@@ -109,7 +109,7 @@ func _process(_delta):
 		printt(angle, current_arc, arc_donut.start_angle);
 		if current_arc:
 			_on_coin_collected(current_arc);
-			lock_speed = 2.0 + 0.125 * int(current_difficulty / 5);
+			lock_speed = 2.0 + 0.125 * int(current_difficulty / 5.0);
 		else:
 			_on_lose();
 
@@ -130,31 +130,13 @@ func _on_coin_collected(current_arc):
 
 	was_between = false;
 
-	var angle = rad_to_deg(indicator.current_angle) + 90;
+	var angle = rad_to_deg(indicator.rotation) + 90;
 	arc_donut.reverse = indicator.direction == -1;
 	arc_donut.start_angle = randf_range(
 		angle + min_spawn_distance,
 		angle + 360 - min_spawn_distance
 	);
 
-# func _on_win():
-#	var old_direction = indicator.direction;
-#	indicator.direction = 0;
-#	
-#	await unlock();
-#	await lock();
-
-#	lock_difficulty += 1;
-#	if lock_difficulty % 3 == 0:
-#		lock_speed += 0.125;
-
-#	lock_won.emit(lock_difficulty, lock_speed);
-
-#	indicator.direction = old_direction;
-#	arc_donut.start_angle = indicator.current_angle + first_spawn_distance + 90;
-#	arc_donut.reverse = indicator.direction == -1;
-
 func _on_lose():
 	indicator.direction = 0;
-	# await lose();
 	lock_lost.emit(current_difficulty);

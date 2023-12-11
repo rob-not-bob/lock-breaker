@@ -1,16 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bneiarbw7thba"]
+[gd_scene load_steps=2 format=3 uid="uid://bneiarbw7thba"]
 
 [ext_resource type="AudioStream" uid="uid://b0yd33ru7dgct" path="res://assets/alex-productions-cyberpunk-computer-game-idra(chosic.com).mp3" id="1_7iw7d"]
-[ext_resource type="Script" path="res://AudioSpectrumHelper.gd" id="1_jfylg"]
 
 [node name="BGM" type="AudioStreamPlayer"]
 stream = ExtResource("1_7iw7d")
 volume_db = -14.0
 autoplay = true
-bus = &"Music"
-
-[node name="AudioSpectrumHelper" type="Node" parent="."]
-script = ExtResource("1_jfylg")
-Multiplier = 0.125
-lerp_smoothing = 15.0
-num_previous_samples = 120

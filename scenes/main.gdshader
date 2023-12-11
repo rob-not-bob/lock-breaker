@@ -37,7 +37,8 @@ void fragment() {
 	float zoom_size = PULSE_SIZE * expImpulse(time_shaper(1.0 / BPS), 8.) + 1.0;
 	uv = centered_zoom(uv, zoom_size);
 	uv = screen_shake(uv);
+	vec3 original_color = texture(SCREEN_TEXTURE, uv).rgb;
 
-	COLOR = texture(SCREEN_TEXTURE, uv);
+	COLOR = vec4(original_color, 1.0);
 }
 

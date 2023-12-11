@@ -10,10 +10,9 @@ var _radius: float = 0;
 func initialize(center: Vector2, radius: float, track_width: float, start_angle: float = 0):
 	_radius = radius;
 	_center = center;
-	current_angle = start_angle;
+	rotation = start_angle;
 	_set_sizes(track_width);
 
-var current_angle: float = 0;
 var direction = 1;
 
 func _set_sizes(track_width: float):
@@ -22,6 +21,5 @@ func _set_sizes(track_width: float):
 	scale = Vector2(ratio, ratio) * 2.0;
 
 func _physics_process(delta):
-	current_angle += rotation_speed * direction * delta;
-	position = MyUtils.get_position_about_point(_center, _radius, current_angle);
-	rotation = current_angle;
+	rotation += rotation_speed * direction * delta;
+	position = _center + _radius * Vector2.from_angle(rotation);

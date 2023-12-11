@@ -15,6 +15,14 @@ var ADS = {
 	}
 }
 
+func _get_ad_id(kind: String) -> String:
+	if OS.get_name() == "Android":
+		return ADS.android.get(kind).test if OS.is_debug_build() else ADS.android.get(kind).prod;
+	elif OS.get_name() == "iOS":
+		return ADS.ios.get(kind).test if OS.is_debug_build() else ADS.ios.get(kind).prod;
+
+	return "NA";
+
 func _ready():
 	MobileAds.initialize();
 
@@ -24,12 +32,7 @@ func _create_ad_view() -> void:
 	if _ad_view:
 		destroy_ad_view()
 
-	var unit_id: String
-	if OS.get_name() == "Android":
-			unit_id = ADS.android.banner.test;
-	elif OS.get_name() == "iOS":
-		unit_id = ADS.ios.banner.test;
-
+	var unit_id: String = _get_ad_id("banner");
 	_ad_view = AdView.new(unit_id, AdSize.BANNER, AdPosition.Values.BOTTOM)
 
 func _on_load_banner_pressed():
