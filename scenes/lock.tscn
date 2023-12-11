@@ -1,10 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://dxo2ec4gcr203"]
+[gd_scene load_steps=10 format=3 uid="uid://dxo2ec4gcr203"]
 
 [ext_resource type="Script" path="res://scenes/lock.gd" id="1_tnfkh"]
 [ext_resource type="PackedScene" uid="uid://ch5418xgdqmbj" path="res://scenes/shackle.tscn" id="3_70kar"]
-[ext_resource type="PackedScene" uid="uid://bpy1hd0buwsk4" path="res://scenes/indicator.tscn" id="4_mem34"]
 [ext_resource type="AudioStream" uid="uid://lfiu78bu6l4l" path="res://assets/unlock.mp3" id="4_r64xg"]
-[ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="6_bq63j"]
 [ext_resource type="PackedScene" uid="uid://drgb3ug0av0u8" path="res://scenes/arc_donut.tscn" id="8_pripq"]
 
 [sub_resource type="Animation" id="Animation_tvi3e"]
@@ -150,12 +148,10 @@ _data = {
 }
 
 [node name="lock" type="Node2D"]
-position = Vector2(-1, -2)
 script = ExtResource("1_tnfkh")
-metadata/_edit_vertical_guides_ = [588.0]
 
 [node name="shackle" parent="." instance=ExtResource("3_70kar")]
-position = Vector2(594, 841)
+position = Vector2(0, -545)
 inner_to_outer_ratio = 0.55
 outer_radius = 281.302
 shackle_length = 186.486
@@ -164,35 +160,9 @@ color = Color(0.054902, 0.164706, 0.168627, 1)
 [node name="lock_body" type="Node2D" parent="."]
 
 [node name="arc_donut" parent="lock_body" instance=ExtResource("8_pripq")]
-position = Vector2(588, 1375)
 outer_radius = 457.464
 start_angle = 0.0
-coyote_angle_size = 2.5
-arc_colors = Array[Color]([Color(0.933333, 0.607843, 0, 1), Color(0.792157, 0.403922, 0.00784314, 1), Color(0.682353, 0.12549, 0.0705882, 1)])
 reverse = false
-
-[node name="indicator" parent="lock_body" instance=ExtResource("4_mem34")]
-rotation_speed = 2.75
-
-[node name="countdown" type="Label" parent="lock_body"]
-modulate = Color(1, 1, 12, 1)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 307.0
-offset_top = 1218.5
-offset_right = 887.0
-offset_bottom = 1481.5
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("6_bq63j")
-theme_override_colors/font_color = Color(1, 1, 1, 0.878431)
-theme_override_font_sizes/font_size = 240
-text = "99"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

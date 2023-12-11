@@ -3,6 +3,5 @@
 [ext_resource type="Script" path="res://scenes/shackle.gd" id="1_ndel4"]
 
 [node name="shackle" type="Node2D"]
-position = Vector2(531, 1152)
 script = ExtResource("1_ndel4")
 color = Color(0.0392157, 0.0901961, 0.0980392, 1)

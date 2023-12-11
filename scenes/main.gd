@@ -23,7 +23,7 @@ func _ready():
 	load_game();
 	set_theme();
 	$MarginContainer.hide();
-	lock.indicator.direction = 0;
+	$Controller.init();
 
 func _on_lose(score: int):
 	if score > best_score:
@@ -37,16 +37,17 @@ func _on_lose(score: int):
 
 func set_theme():
 	var theme = Themes.get_random_theme();
+	EventBus.theme_set.emit(theme);
 	$bg.color = theme.bg;
-	lock.set_theme(theme);
 
 func _start_game():
 	# Ads.load_banner();
-	lock.reset();
+	# lock.reset();
 	$AnimationPlayer.play("RESET");
 	$TryAgain.hide();
 	$StartScreen.hide();
 	$MarginContainer.show();
+	$Controller.start();
 
 func _on_try_again_clicked():
 	set_theme();

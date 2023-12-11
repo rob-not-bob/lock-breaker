@@ -1,6 +1,5 @@
-extends Node2D
-
 class_name Indicator
+extends Node2D
 
 @export var rotation_speed: float = 2.5;
 
@@ -13,11 +12,11 @@ func initialize(center: Vector2, radius: float, track_width: float, start_angle:
 	rotation = start_angle;
 	_set_sizes(track_width);
 
-var direction = 1;
+var direction: int = T.Direction.CLOCKWISE;
 
 func _set_sizes(track_width: float):
-	var pixel_size = float($Sprite2D.texture.get_size().x);
-	var ratio = (track_width - 10) / pixel_size;
+	var pixel_size := float($Sprite2D.texture.get_size().x);
+	var ratio := (track_width - 10) / pixel_size;
 	scale = Vector2(ratio, ratio) * 2.0;
 
 func _physics_process(delta):

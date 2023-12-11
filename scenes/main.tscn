@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cfxsdxfsx0y1d"]
+[gd_scene load_steps=17 format=3 uid="uid://cfxsdxfsx0y1d"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_1yv36"]
 [ext_resource type="PackedScene" uid="uid://dxo2ec4gcr203" path="res://scenes/lock.tscn" id="1_ws75f"]
@@ -6,7 +6,9 @@
 [ext_resource type="Shader" path="res://scenes/main.gdshader" id="3_5ecpm"]
 [ext_resource type="Script" path="res://scenes/RandPitch.gd" id="3_6yysx"]
 [ext_resource type="PackedScene" uid="uid://bdhrkiy3lgcxv" path="res://scenes/screens/game_over_screen.tscn" id="4_br3or"]
+[ext_resource type="Script" path="res://scripts/Controller.gd" id="4_g8gkn"]
 [ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="6_0eh8q"]
+[ext_resource type="PackedScene" uid="uid://bpy1hd0buwsk4" path="res://scenes/indicator.tscn" id="6_wb7sh"]
 [ext_resource type="PackedScene" uid="uid://c0g4kiq87bjnv" path="res://scenes/screens/start_screen.tscn" id="9_8e03d"]
 [ext_resource type="PackedScene" uid="uid://caqopysoe54od" path="res://scenes/screens/credits.tscn" id="9_sdku8"]
 
@@ -80,11 +82,9 @@ shader_parameter/BPM = 110.0
 shader_parameter/SHAKE_INTENSITY = 0.0
 shader_parameter/SHAKE_SPEED = 32.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_i6idq"]
-size = Vector2(100, 100)
-
 [node name="UI" type="CanvasLayer"]
 script = ExtResource("1_1yv36")
+metadata/_edit_vertical_guides_ = [589.0]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -106,6 +106,12 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0980392, 0.447059, 0.470588, 1)
 
+[node name="Controller" type="Node" parent="." node_paths=PackedStringArray("lock", "indicator", "score_label")]
+script = ExtResource("4_g8gkn")
+lock = NodePath("../CenterContainer/SubViewportContainer/SubViewport/lock")
+indicator = NodePath("../CenterContainer/SubViewportContainer/SubViewport/indicator")
+score_label = NodePath("../CenterContainer/SubViewportContainer/SubViewport/Score")
+
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchors_preset = -1
 anchor_right = 1.0
@@ -124,7 +130,20 @@ size = Vector2i(1176, 2142)
 render_target_update_mode = 4
 
 [node name="lock" parent="CenterContainer/SubViewportContainer/SubViewport" instance=ExtResource("1_ws75f")]
-position = Vector2(0, -175)
+position = Vector2(589, 1220)
+
+[node name="indicator" parent="CenterContainer/SubViewportContainer/SubViewport" instance=ExtResource("6_wb7sh")]
+
+[node name="Score" type="Label" parent="CenterContainer/SubViewportContainer/SubViewport"]
+offset_left = 349.0
+offset_top = 1100.0
+offset_right = 829.0
+offset_bottom = 1340.0
+theme = ExtResource("6_0eh8q")
+theme_override_font_sizes/font_size = 240
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="shader" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_ayhpd")
@@ -166,13 +185,6 @@ visible = false
 [node name="credits" parent="." instance=ExtResource("9_sdku8")]
 visible = false
 
-[node name="TouchScreenButton" type="TouchScreenButton" parent="."]
-visible = false
-shape = SubResource("RectangleShape2D_i6idq")
-
-[connection signal="crit" from="CenterContainer/SubViewportContainer/SubViewport/lock" to="." method="_on_lock_crit"]
-[connection signal="lock_lost" from="CenterContainer/SubViewportContainer/SubViewport/lock" to="." method="_on_lose"]
-[connection signal="lock_won" from="CenterContainer/SubViewportContainer/SubViewport/lock" to="." method="_on_lock_beat"]
 [connection signal="try_again_clicked" from="TryAgain" to="." method="_on_try_again_clicked"]
 [connection signal="credit_button_clicked" from="StartScreen" to="." method="_on_credit_button_clicked"]
 [connection signal="mute_button_clicked" from="StartScreen" to="." method="_on_mute_button_clicked"]
