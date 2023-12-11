@@ -15,29 +15,36 @@ class_name ArcDonut;
 			angle = 360 + angle;
 		start_angle = fmod(angle, 360);
 @export var arc_names: Array[String] = ["yellow", "orange", "red"];
-@export var angle_sizes: Array[float] = [21.6, 10.8, 5.4];
+@export var arc_angles: Array[float] = [21.6, 10.8, 5.4];
 @export_range(0, 360, 0.1) var coyote_angle_size: float = 2.5;
-@export var colors: Array[Color] = [Color.html("#EE9B00"), Color.html("#CA6702"), Color.html("#AE2012")];
+@export var arc_colors: Array[Color] = [Color.html("#EE9B00"), Color.html("#CA6702"), Color.html("#AE2012")];
+var arcs: Array[Arc] = [];
 @export var reverse: bool = false;
 
 var _sum: float = 0;
 
 func _ready():
 	_sum = 0;
-	for angle in angle_sizes:
-		_sum += angle;
+	for i in range(arc_names.size()):
+		arcs.push_back(Arc.new(arc_names[i], arc_colors[i], arc_angles[i]));
+		_sum += arc_angles[i];
+
+	arcs.push_back(Arc.new("none", bg_color, 360 - _sum));
+
 	_sum += coyote_angle_size;
 
 func _process(_delta):
 	queue_redraw();
 
-func _draw_arc_about_point(center: Vector2, from_angle: float, to_angle: float, color: Color):
-	var points_arc = PackedVector2Array()
-	var inner_radius = outer_radius * inner_to_outer_ratio;
+func _draw_arc(from_angle: float, arc: Arc):
+	var arc_points := PackedVector2Array()
+	var inner_radius: float = outer_radius * inner_to_outer_ratio;
+	var to_angle := from_angle + arc.angle;
 
+	var slope := (to_angle - from_angle) / number_of_points;
 	var draw_arc_point := func(index: int, radius: float) -> void:
-		var angle_point = deg_to_rad(from_angle + index * (to_angle - from_angle) / number_of_points - 90);
-		points_arc.push_back(center + Vector2.from_angle(angle_point) * radius);
+		var angle := deg_to_rad(slope * index + from_angle);
+		arc_points.push_back(Vector2.from_angle(angle) * radius);
 
 	for i in range(number_of_points + 1):
 		draw_arc_point.call(i, outer_radius);
@@ -45,7 +52,7 @@ func _draw_arc_about_point(center: Vector2, from_angle: float, to_angle: float, 
 	for i in range(number_of_points, -1, -1):
 		draw_arc_point.call(i, inner_radius);
 
-	draw_colored_polygon(points_arc, color);
+	draw_colored_polygon(arc_points, arc.color);
 
 ## Returns the name of the arc at _deg
 func get_arc_name_at(_deg: float):
@@ -64,14 +71,14 @@ func get_arc_name_at(_deg: float):
 		return null;
 
 	var total_angle = arc_start;
-	for i in len(angle_sizes):
-		var index = len(angle_sizes) - i - 1 if reverse else i;
-		var angle = angle_sizes[index];
+	for i in len(arc_angles):
+		var index = len(arc_angles) - i - 1 if reverse else i;
+		var angle = arc_angles[index];
 		total_angle += angle;
 		if deg <= total_angle:
 			return arc_names[index];
 
-		var is_last_arc = i == len(angle_sizes) - 1;
+		var is_last_arc = i == len(arc_angles) - 1;
 		if is_last_arc and deg <= (total_angle + coyote_angle_size):
 			return arc_names[index];
 
@@ -79,16 +86,22 @@ func get_arc_name_at(_deg: float):
 	return null;
 
 func _draw():
-	var angle_start = start_angle;
-	for i in len(angle_sizes):
-		var angle = -angle_sizes[i] if reverse else angle_sizes[i];
-		_draw_arc_about_point(Vector2(0, 0),
-			angle_start, angle_start + angle,
-			colors[i],
-		);
-		angle_start += angle;
+	var arc_start := start_angle;
+	for arc in arcs:
+		if reverse:
+			arc_start -= arc.angle;
 
-	if reverse:
-		_draw_arc_about_point(Vector2(0, 0), start_angle, 360 + angle_start, bg_color);
-	else:
-		_draw_arc_about_point(Vector2(0, 0), angle_start, 360 + start_angle, bg_color);
+		_draw_arc(arc_start, arc);
+
+		if not reverse:
+			arc_start += arc.angle;
+
+class Arc:
+	var name: String;
+	var color: Color;
+	var angle: float;
+
+	func _init(_name: String, _color: Color, _angle: float):
+		self.name = _name;
+		self.color = _color;
+		self.angle = _angle;

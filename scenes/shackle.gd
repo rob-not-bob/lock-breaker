@@ -14,26 +14,29 @@ func _process(_delta):
 		queue_redraw();
 
 func draw_shackle(center: Vector2):
-	var points_arc = PackedVector2Array()
-	var from_angle = -90;
-	var to_angle = 90;
+	var points_arc := PackedVector2Array()
+	var from_angle := deg_to_rad(-180);
+	var to_angle := deg_to_rad(0);
 	var inner_radius = outer_radius * inner_to_outer_ratio;
 
+	var get_point_on_circle = func(angle: float, radius: float) -> Vector2:
+		return Vector2.from_angle(angle) * radius;
+
 	var shackle_offset = Vector2(0, shackle_length);
-	var point = deg_to_rad(from_angle - 90);
-	points_arc.push_back(center + Vector2(cos(point), sin(point)) * inner_radius + shackle_offset);
-	points_arc.push_back(center + Vector2(cos(point), sin(point)) * outer_radius + shackle_offset);
+	var offset = center + shackle_offset;
+
+	points_arc.push_back(offset + get_point_on_circle.call(from_angle, inner_radius));
+	points_arc.push_back(offset + get_point_on_circle.call(from_angle, outer_radius));
 
 	var draw_arc_point := func(index: int, radius: float) -> void:
-		var angle_point = deg_to_rad(from_angle + index * (to_angle - from_angle) / float(number_of_points) - 90);
-		points_arc.push_back(center + Vector2(cos(angle_point), sin(angle_point)) * radius);
+		var angle = from_angle + index * (to_angle - from_angle) / float(number_of_points);
+		points_arc.push_back(center + get_point_on_circle.call(angle, radius));
 
 	for i in range(number_of_points + 1):
 		draw_arc_point.call(i, outer_radius);
 
-	var point2 = deg_to_rad(to_angle - 90);
-	points_arc.push_back(center + Vector2(cos(point2), sin(point2)) * outer_radius + shackle_offset);
-	points_arc.push_back(center + Vector2(cos(point2), sin(point2)) * inner_radius + shackle_offset);
+	points_arc.push_back(offset + get_point_on_circle.call(to_angle, outer_radius));
+	points_arc.push_back(offset + get_point_on_circle.call(to_angle, inner_radius));
 
 	for i in range(number_of_points, -1, -1):
 		draw_arc_point.call(i, inner_radius);

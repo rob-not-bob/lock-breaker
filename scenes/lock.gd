@@ -8,85 +8,43 @@ signal crit;
 @onready var indicator: Indicator = $lock_body/indicator;
 @onready var countdown: Label = $lock_body/countdown;
 
-@export_group("Lock Difficulty")
-@export var lock_difficulty: int = 0:
-	set(difficulty):
-		lock_difficulty = difficulty;
-	get:
-		return lock_difficulty;
-
-
 @export_group("Lock Speed")
 @export var max_lock_speed: float = 7.0;
 @export var lock_speed: float = 2.0:
 	set(speed):
 		lock_speed = min(speed, max_lock_speed);
 		indicator.rotation_speed = lock_speed;
-	get:
-		return lock_speed;
 
-@export_group("Coin Spawn Distance")
+@export_group("Arc Spawn Distance")
 @export var first_spawn_distance: float = 90;
 @export var min_spawn_distance: float = 60;
 
-@onready var current_difficulty: int = lock_difficulty:
+@onready var score: int = 0:
 	set(difficulty):
-		current_difficulty = max(0, difficulty);
-		countdown.text = str(current_difficulty);
-		if current_difficulty < 100:
+		score = max(0, difficulty);
+		countdown.text = str(score);
+		if score < 100:
 			countdown.add_theme_font_size_override("font_size", 260);
-		elif current_difficulty >= 100:
+		elif score >= 100:
 			countdown.add_theme_font_size_override("font_size", 190);
-		elif current_difficulty >= 1000:
+		elif score >= 1000:
 			countdown.add_theme_font_size_override("font_size", 145);
-	get:
-		return current_difficulty;
 
 var was_between: bool = false;
 
-func reset() -> void:
-	current_difficulty = 0;
-	arc_donut.start_angle = randf_range(0, 360);
-	arc_donut.reverse = false;
-	indicator.rotation = deg_to_rad(arc_donut.start_angle + first_spawn_distance - 90);
-	indicator.direction = -1 if arc_donut.reverse else 1;
-	lock_speed = 2.0;
-	was_between = false;
-
-func set_theme(theme) -> void:
-	arc_donut.bg_color = theme.donut.bg;
-	arc_donut.colors.clear();
-	arc_donut.colors.append_array(theme.donut.arcs);
-
-	countdown.modulate = theme.countdown;
-	indicator.modulate = theme.indicator;
-
-	$shackle.color = theme.shackle;
-	$shackle.queue_redraw();
-
-func lock() -> Signal:
-	# $AnimationPlayer.play_backwards("unlock");
-	return $AnimationPlayer.animation_finished;
-
-func unlock() -> Signal:
-	# $AnimationPlayer.play("unlock");
-	return $AnimationPlayer.animation_finished;
-
-func lose() -> Signal:
-	# $AnimationPlayer.play("fail");
-	return $AnimationPlayer.animation_finished;
-
 func _ready():
-	var center = arc_donut.position;
-	var inner_radius = arc_donut.outer_radius * arc_donut.inner_to_outer_ratio;
-	var trackWidth = (arc_donut.outer_radius - inner_radius) / 2;
-	var radius = (inner_radius + arc_donut.outer_radius) / 2;
-	current_difficulty = lock_difficulty;
-	
-	indicator.initialize(center, radius, trackWidth);
-	indicator.rotation = deg_to_rad(arc_donut.start_angle + first_spawn_distance - 90);
-	indicator.direction = -1 if arc_donut.reverse else 1;
-	was_between = false;
+	var init_indicator := func():
+		var center := arc_donut.position;
+		var inner_radius: float = arc_donut.outer_radius * arc_donut.inner_to_outer_ratio;
+
+		var trackWidth := (arc_donut.outer_radius - inner_radius) / 2.0;
+		var orbitRadius := (inner_radius + arc_donut.outer_radius) / 2.0;
+
+		indicator.initialize(center, orbitRadius, trackWidth);
+
+	init_indicator.call();
+	reset();
+
 
 func _process(_delta):
 	if Input.is_action_just_pressed("pause"):
@@ -99,7 +57,7 @@ func _process(_delta):
 	if indicator.direction == 0:
 		return;
 
-	var angle = rad_to_deg(indicator.rotation) + 90;
+	var angle = rad_to_deg(indicator.rotation);
 	var current_arc = arc_donut.get_arc_name_at(angle);
 
 	if Input.is_action_just_pressed("invert"):
@@ -108,8 +66,8 @@ func _process(_delta):
 		printt("angle", "arc", "d_angle");
 		printt(angle, current_arc, arc_donut.start_angle);
 		if current_arc:
-			_on_coin_collected(current_arc);
-			lock_speed = 2.0 + 0.125 * int(current_difficulty / 5.0);
+			_on_score(current_arc);
+			lock_speed = 2.0 + 0.125 * int(score / 5.0);
 		else:
 			_on_lose();
 
@@ -119,24 +77,66 @@ func _process(_delta):
 	elif arc_donut.get_arc_name_at(angle):
 			was_between = true;
 
-func _on_coin_collected(current_arc):
+
+func reset() -> void:
+	score = 0;
+	lock_speed = 2.0;
+	was_between = false;
+
+	indicator.direction = 1;
+	_choose_new_start_angle();
+
+
+func set_theme(theme) -> void:
+	arc_donut.bg_color = theme.donut.bg;
+	arc_donut.arc_colors.clear();
+	arc_donut.arc_colors.append_array(theme.donut.arcs);
+
+	countdown.modulate = theme.countdown;
+	indicator.modulate = theme.indicator;
+
+	$shackle.color = theme.shackle;
+	$shackle.queue_redraw();
+
+
+func lock() -> Signal:
+	# $AnimationPlayer.play_backwards("unlock");
+	return $AnimationPlayer.animation_finished;
+
+
+func unlock() -> Signal:
+	# $AnimationPlayer.play("unlock");
+	return $AnimationPlayer.animation_finished;
+
+
+func lose() -> Signal:
+	# $AnimationPlayer.play("fail");
+	return $AnimationPlayer.animation_finished;
+
+
+func _on_score(current_arc):
 	if current_arc == "red":
-		current_difficulty += 3;
+		score += 3;
 		crit.emit();
 	elif current_arc == "orange":
-		current_difficulty += 2;
+		score += 2;
 	else:
-		current_difficulty += 1;
+		score += 1;
 
 	was_between = false;
 
-	var angle = rad_to_deg(indicator.rotation) + 90;
+	_choose_new_start_angle();
+
+
+func _choose_new_start_angle():
+	var angle = rad_to_deg(indicator.rotation);
 	arc_donut.reverse = indicator.direction == -1;
 	arc_donut.start_angle = randf_range(
 		angle + min_spawn_distance,
 		angle + 360 - min_spawn_distance
 	);
 
+
 func _on_lose():
 	indicator.direction = 0;
-	lock_lost.emit(current_difficulty);
+	lock_lost.emit(score);

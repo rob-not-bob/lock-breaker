@@ -168,6 +168,7 @@ position = Vector2(588, 1375)
 outer_radius = 457.464
 start_angle = 0.0
 coyote_angle_size = 2.5
+arc_colors = Array[Color]([Color(0.933333, 0.607843, 0, 1), Color(0.792157, 0.403922, 0.00784314, 1), Color(0.682353, 0.12549, 0.0705882, 1)])
 reverse = false
 
 [node name="indicator" parent="lock_body" instance=ExtResource("4_mem34")]
