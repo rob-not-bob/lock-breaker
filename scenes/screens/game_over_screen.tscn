@@ -1,63 +1,50 @@
-[gd_scene load_steps=3 format=3 uid="uid://bdhrkiy3lgcxv"]
+[gd_scene load_steps=5 format=3 uid="uid://bdhrkiy3lgcxv"]
 
 [ext_resource type="Script" path="res://scenes/screens/game_over_screen.gd" id="1_lrsry"]
 [ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="2_bnhkj"]
+[ext_resource type="PackedScene" uid="uid://dcj45inn52d1x" path="res://ui_screen.tscn" id="2_xpk08"]
+[ext_resource type="PackedScene" uid="uid://6a4dfgetmuf0" path="res://scenes/screens/mute_button.tscn" id="4_onurw"]
 
-[node name="Control" type="Control"]
+[node name="game_over_screen" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1139.0
-offset_bottom = -2516.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_lrsry")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="screen" parent="." instance=ExtResource("2_xpk08")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 1139.0
-offset_bottom = 2516.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.501961)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -1.0
-offset_right = 1139.0
-offset_bottom = 2516.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="VBoxContainer" type="VBoxContainer" parent="screen/MarginContainer" index="0"]
+layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="GameOver" type="Label" parent="VBoxContainer"]
+[node name="GameOver" type="Label" parent="screen/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 256)
 layout_mode = 2
 theme = ExtResource("2_bnhkj")
-theme_override_font_sizes/font_size = 100
+theme_type_variation = &"HeaderMedium"
 text = "Game Over"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="Score" type="Label" parent="VBoxContainer"]
+[node name="Score" type="Label" parent="screen/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 119)
 layout_mode = 2
 theme = ExtResource("2_bnhkj")
+theme_override_font_sizes/font_size = 60
 text = "Score: 0"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="BestScore" type="Label" parent="VBoxContainer"]
+[node name="BestScore" type="Label" parent="screen/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 214)
 layout_mode = 2
 theme = ExtResource("2_bnhkj")
@@ -66,10 +53,15 @@ text = "Best Score: 0"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="TryAgain" type="Button" parent="VBoxContainer"]
+[node name="TryAgain" type="Button" parent="screen/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 theme = ExtResource("2_bnhkj")
 text = "Try Again"
 
-[connection signal="button_up" from="VBoxContainer/TryAgain" to="." method="_on_try_again_button_up"]
+[node name="MuteButton" parent="screen/MarginContainer" index="1" instance=ExtResource("4_onurw")]
+layout_mode = 2
+
+[connection signal="button_up" from="screen/MarginContainer/VBoxContainer/TryAgain" to="." method="_on_try_again_button_up"]
+
+[editable path="screen"]

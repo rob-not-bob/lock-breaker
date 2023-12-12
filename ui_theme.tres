@@ -1,7 +1,13 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://7ufvk254irrw"]
-
-[ext_resource type="FontFile" uid="uid://yltbd33hu48c" path="res://assets/PublicPixel-z84yD.ttf" id="1_ke8og"]
+[gd_resource type="Theme" format=3 uid="uid://7ufvk254irrw"]
 
 [resource]
-default_font = ExtResource("1_ke8og")
-default_font_size = 60
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/font_sizes/font_size = 60
+HeaderLarge/base_type = &"Label"
+HeaderLarge/font_sizes/font_size = 160
+HeaderMedium/font_sizes/font_size = 100
+Label/font_sizes/font_size = 40
+MarginContainer/constants/margin_bottom = 35
+MarginContainer/constants/margin_left = 35
+MarginContainer/constants/margin_right = 35
+MarginContainer/constants/margin_top = 35

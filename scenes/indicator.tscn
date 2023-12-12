@@ -8,7 +8,6 @@ radius = 18.0
 height = 104.0
 
 [node name="indicator" type="Area2D"]
-modulate = Color(0.54, 0.69, 35.5, 1)
 script = ExtResource("1_73jl4")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

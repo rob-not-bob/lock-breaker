@@ -1,15 +1,21 @@
 extends Node
 
-var game_state = {};
+signal game_loaded(game_state: Dictionary);
 
-const _save_file_location = "user://savegame.save";
+var game_state := {};
+const _save_file_location := "user://savegame.save";
 
-func save_game():
+func _ready() -> void:
+	load_game();
+
+
+func save_game() -> void:
 	var save_file = FileAccess.open(_save_file_location, FileAccess.WRITE);
 	var game_state_string = JSON.stringify(game_state);
 	save_file.store_string(game_state_string);
 
-func load_game():
+
+func load_game() -> Dictionary:
 	if not FileAccess.file_exists(_save_file_location):
 		print_debug("No save file")
 		return {};
@@ -22,5 +28,8 @@ func load_game():
 		print_debug("Error reading game state");
 		return {};
 
+	print('game loaded', game_state)
 	game_state = saved_game_state;
+	game_loaded.emit(game_state);
+
 	return game_state;
