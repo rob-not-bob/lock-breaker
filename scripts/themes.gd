@@ -2,9 +2,9 @@ extends Node
 
 var current_theme_index: int = 0;
 
-func get_random_theme():
-	var themes = [default, yellow, red, blue];
-	var index = current_theme_index;
+func get_random_theme() -> Dictionary:
+	var themes := [default, yellow, red, blue];
+	var index := current_theme_index;
 	while index == current_theme_index:
 		index = randi_range(0, len(themes) - 1);
 

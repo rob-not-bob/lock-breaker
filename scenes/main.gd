@@ -21,6 +21,7 @@ func set_theme():
 	var theme = Themes.get_random_theme();
 	EventBus.theme_set.emit(theme);
 	$UI/GameUI/bg.color = theme.bg;
+	%Score.modulate = theme.countdown;
 
 
 func _start_game():
