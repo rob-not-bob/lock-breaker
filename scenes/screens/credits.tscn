@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://caqopysoe54od"]
+[gd_scene load_steps=5 format=3 uid="uid://caqopysoe54od"]
 
 [ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="1_1twrc"]
 [ext_resource type="Script" path="res://scenes/screens/credits.gd" id="1_s85r1"]
+[ext_resource type="PackedScene" uid="uid://clm3jtgflegyk" path="res://scenes/SafeMarginContainer.tscn" id="2_38igp"]
 [ext_resource type="PackedScene" uid="uid://dcj45inn52d1x" path="res://ui_screen.tscn" id="2_tlkf0"]
 
 [node name="credits" type="Control"]
@@ -13,13 +14,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_s85r1")
 
-[node name="screen" parent="." instance=ExtResource("2_tlkf0")]
+[node name="SafeMarginContainer" parent="." instance=ExtResource("2_38igp")]
 layout_mode = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="screen/MarginContainer" index="1"]
+[node name="screen" parent="SafeMarginContainer" instance=ExtResource("2_tlkf0")]
 layout_mode = 2
 
-[node name="Attribution" type="Label" parent="screen/MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="SafeMarginContainer/screen/MarginContainer" index="0"]
+layout_mode = 2
+
+[node name="Attribution" type="Label" parent="SafeMarginContainer/screen/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 700)
 layout_mode = 2
 size_flags_vertical = 3
@@ -34,12 +38,12 @@ https://creativecommons.org/licenses/by/3.0/
 "
 autowrap_mode = 1
 
-[node name="Back" type="Button" parent="screen/MarginContainer/VBoxContainer"]
+[node name="Back" type="Button" parent="SafeMarginContainer/screen/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 theme = ExtResource("1_1twrc")
 text = "Back"
 
-[connection signal="button_up" from="screen/MarginContainer/VBoxContainer/Back" to="." method="_on_back_button_up"]
+[connection signal="button_up" from="SafeMarginContainer/screen/MarginContainer/VBoxContainer/Back" to="." method="_on_back_button_up"]
 
-[editable path="screen"]
+[editable path="SafeMarginContainer/screen"]

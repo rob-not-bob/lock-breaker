@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cfxsdxfsx0y1d"]
+[gd_scene load_steps=24 format=3 uid="uid://cfxsdxfsx0y1d"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_1yv36"]
 [ext_resource type="PackedScene" uid="uid://dxo2ec4gcr203" path="res://scenes/lock.tscn" id="1_ws75f"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://scenes/TextureButton.gd" id="8_r0r0k"]
 [ext_resource type="PackedScene" uid="uid://bneiarbw7thba" path="res://scenes/bgm.tscn" id="8_r087m"]
 [ext_resource type="PackedScene" uid="uid://6a4dfgetmuf0" path="res://scenes/screens/mute_button.tscn" id="9_3f265"]
+[ext_resource type="PackedScene" uid="uid://clm3jtgflegyk" path="res://scenes/SafeMarginContainer.tscn" id="10_j6025"]
 [ext_resource type="Script" path="res://scenes/screens/BestScore.gd" id="10_vraqa"]
 [ext_resource type="Script" path="res://scenes/bgm.gd" id="11_hldsw"]
 
@@ -221,8 +222,10 @@ texture_normal = SubResource("PlaceholderTexture2D_0c3ni")
 stretch_mode = 0
 script = ExtResource("8_r0r0k")
 
-[node name="BestScore" type="Label" parent="UI/StaticGameUI"]
-custom_minimum_size = Vector2(0, 73)
+[node name="SafeMarginContainer" parent="UI/StaticGameUI" instance=ExtResource("10_j6025")]
+layout_mode = 2
+
+[node name="BestScore" type="Label" parent="UI/StaticGameUI/SafeMarginContainer"]
 layout_mode = 2
 size_flags_vertical = 0
 theme = ExtResource("6_0eh8q")
@@ -230,7 +233,6 @@ theme_override_colors/font_color = Color(1, 1, 1, 0.764706)
 theme_override_font_sizes/font_size = 50
 text = "Best Score: 0"
 horizontal_alignment = 1
-vertical_alignment = 2
 script = ExtResource("10_vraqa")
 
 [node name="MuteButton" parent="UI/StaticGameUI" instance=ExtResource("9_3f265")]
