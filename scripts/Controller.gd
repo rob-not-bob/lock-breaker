@@ -55,7 +55,7 @@ func _handle_direction_change() -> void:
 
 	printt("arc name", arc_name);
 	if not arc_name:
-		missed_arcs.emit();
+		_missed_arcs();
 	else:
 		previous_arc = null;
 		selected_arc.emit(arc_name);
@@ -71,5 +71,8 @@ func _check_for_passive_loss() -> void:
 	if not previous_arc and indicator_over_arc:
 		previous_arc = indicator_over_arc;
 	elif previous_arc and not indicator_over_arc:
-		missed_arcs.emit();
+		_missed_arcs();
 
+func _missed_arcs():
+	previous_direction = indicator.direction as T.Direction;
+	missed_arcs.emit();

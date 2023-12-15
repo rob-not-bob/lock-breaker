@@ -21,11 +21,13 @@ buses/default_bus_layout=""
 
 [autoload]
 
+Utils="*res://autoloads/Utils.gd"
+DebugUI="*res://autoloads/debug_ui.tscn"
 GameSaver="*res://scripts/game_saver.gd"
-Ads="res://scripts/ads.gd"
-Themes="*res://scripts/themes.gd"
 EventBus="*res://autoloads/EventBus.gd"
+Themes="*res://scripts/themes.gd"
 ScreenManager="*res://autoloads/ScreenManager.tscn"
+Ads="*res://autoloads/ads/ads.gd"
 
 [display]
 
@@ -85,6 +87,7 @@ common/physics_ticks_per_second=120
 
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+viewport/hdr_2d=true
 
 [shader_globals]
 

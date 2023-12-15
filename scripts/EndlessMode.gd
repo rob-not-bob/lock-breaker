@@ -45,9 +45,12 @@ func init() -> void:
 	_choose_lock_angle();
 
 
-func restart() -> void:
-	score = 0;
-	indicator.direction = T.Direction.CLOCKWISE;
+func restart(with_extra_life: bool) -> void:
+	if with_extra_life:
+		indicator.direction = previous_direction;
+	else:
+		score = 0;
+		indicator.direction = T.Direction.CLOCKWISE;
 	_choose_lock_angle();
 
 
@@ -72,7 +75,9 @@ func _get_point_value(arc_name: String) -> int:
 			return 0;
 
 
+var previous_direction: T.Direction;
 func _lose() -> void:
+	previous_direction = indicator.direction as T.Direction;
 	indicator.direction = T.Direction.NONE;
 	EventBus.lost.emit(score);
 

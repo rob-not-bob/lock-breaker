@@ -8,8 +8,8 @@ enum Screens {
 
 var screens := {}
 
-signal start;
-signal restart;
+signal start();
+signal restart(with_extra_life: bool);
 
 func _ready():
 	screens[Screens.Start] = $StartScreen;
@@ -22,8 +22,8 @@ func _ready():
 	);
 	$StartScreen.credit_button_clicked.connect(switch_to.bind(Screens.Credits));
 	
-	$TryAgain.try_again_clicked.connect(func():
-		restart.emit();
+	$TryAgain.try_again_clicked.connect(func(with_extra_life: bool):
+		restart.emit(with_extra_life);
 		hide_screens();
 	);
 

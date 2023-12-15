@@ -59,21 +59,6 @@ tracks/1/keys = {
 }]
 }
 
-[sub_resource type="Animation" id="Animation_mofnf"]
-resource_name = "screen_shake"
-length = 0.8
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("LockBreaker/UI/GameUI/shaders/shader:material:shader_parameter/SHAKE_INTENSITY")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0.07, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0, 0.2, 0.8)
-}
-
 [sub_resource type="Animation" id="Animation_j051l"]
 resource_name = "mute"
 length = 0.3
@@ -87,6 +72,21 @@ tracks/0/keys = {
 "handle_modes": PackedInt32Array(0, 0),
 "points": PackedFloat32Array(0.05, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
 "times": PackedFloat32Array(0, 0.3)
+}
+
+[sub_resource type="Animation" id="Animation_mofnf"]
+resource_name = "screen_shake"
+length = 0.8
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LockBreaker/UI/GameUI/shaders/shader:material:shader_parameter/SHAKE_INTENSITY")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0.07, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.2, 0.8)
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ql0w6"]
@@ -162,7 +162,9 @@ render_target_update_mode = 4
 position = Vector2(589, 1220)
 
 [node name="indicator" parent="UI/GameUI/CenterContainer/SubViewportContainer/SubViewport" instance=ExtResource("6_wb7sh")]
-position = Vector2(-100, 0)
+unique_name_in_owner = true
+position = Vector2(587, 829)
+rotation = 1.5708
 
 [node name="Score" type="Label" parent="UI/GameUI/CenterContainer/SubViewportContainer/SubViewport"]
 offset_left = 343.0
@@ -176,6 +178,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="shaders" type="Control" parent="UI/GameUI"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

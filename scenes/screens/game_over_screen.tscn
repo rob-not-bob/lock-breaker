@@ -53,7 +53,17 @@ text = "Best Score: 0"
 horizontal_alignment = 1
 autowrap_mode = 2
 
+[node name="TryAgainExtraLife" type="Button" parent="screen/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+theme = ExtResource("2_bnhkj")
+theme_override_font_sizes/font_size = 40
+text = "Watch Ad For
+Extra Life"
+
 [node name="TryAgain" type="Button" parent="screen/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 theme = ExtResource("2_bnhkj")
@@ -62,6 +72,7 @@ text = "Try Again"
 [node name="MuteButton" parent="screen/MarginContainer" index="1" instance=ExtResource("4_onurw")]
 layout_mode = 2
 
+[connection signal="button_up" from="screen/MarginContainer/VBoxContainer/TryAgainExtraLife" to="." method="_on_extra_life_try_again"]
 [connection signal="button_up" from="screen/MarginContainer/VBoxContainer/TryAgain" to="." method="_on_try_again_button_up"]
 
 [editable path="screen"]

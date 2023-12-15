@@ -1,54 +1,72 @@
 extends Node
 
-var ADS = {
-	"android": {
-		"banner": {
-			"test": "ca-app-pub-3940256099942544/6300978111",
-			"prod": "ca-app-pub-3502216226418364/3112329634"
-		}
-	},
-	"ios": {
-		"banner": {
-			"test": "ca-app-pub-3940256099942544/2934735716",
-			"prod": "NOT-YET-IMPLEMENTED"
-		}
-	}
-}
-
-func _get_ad_id(kind: String) -> String:
-	if OS.get_name() == "Android":
-		return ADS.android.get(kind).test if OS.is_debug_build() else ADS.android.get(kind).prod;
-	elif OS.get_name() == "iOS":
-		return ADS.ios.get(kind).test if OS.is_debug_build() else ADS.ios.get(kind).prod;
-
-	return "NA";
+const adConfig = preload("res://scripts/adConfig.gd");
+const AdType = adConfig.AdType;
+const Platform = adConfig.Platform;
+const Env = adConfig.Env;
 
 func _ready():
 	MobileAds.initialize();
 
-var _ad_view: AdView;
-func _create_ad_view() -> void:
-	#free memory
-	if _ad_view:
-		destroy_ad_view()
 
-	var unit_id: String = _get_ad_id("banner");
-	_ad_view = AdView.new(unit_id, AdSize.BANNER, AdPosition.Values.BOTTOM)
+# Returns the ad id for adType if defined
+func _get_ad_id(adType: AdType) -> String:
+	var platformAds: Dictionary;
+	match OS.get_name():
+		"Android":
+			platformAds = adConfig.ADS[Platform.Android];
+		"iOS":
+			platformAds = adConfig.ADS[Platform.IOS];
+		_:
+			return "NA";
+
+	var env := Env.Test if OS.is_debug_build() else Env.Prod;
+
+	return platformAds.get(adType)[env];
+
+
+# Destroys any existing adType in _ads dict
+func _destroy_ad_view(adType: AdType) -> void:
+	if _ads.get(adType):
+		_ads[adType].destroy();
+		_ads[adType] = null;
+
+
+# Initializes the ad into the _ads dict
+func _initAd(adType: AdType, adId: String) -> void:
+	match adType:
+		AdType.Banner:
+			_ads[adType] = AdView.new(adId, AdSize.BANNER, AdPosition.Values.BOTTOM);
+		AdType.RewardedInterstitial:
+			var rewarded_interstitial_ad_load_callback := RewardedInterstitialAdLoadCallback.new()
+			rewarded_interstitial_ad_load_callback.on_ad_failed_to_load = func(adError : LoadAdError) -> void:
+					print(adError.message)
+
+			rewarded_interstitial_ad_load_callback.on_ad_loaded = func(rewarded_interstitial_ad : RewardedInterstitialAd) -> void:
+					print("rewarded interstitial ad loaded" + str(rewarded_interstitial_ad._uid))
+					_ads[adType] = rewarded_interstitial_ad;
+
+			return RewardedInterstitialAdLoader.new().load(adId, AdRequest.new());
+
+var _ads = {};
+func _load_ad(adType: AdType) -> void:
+	if _ads.get(adType):
+		_destroy_ad_view(adType);
+	
+	var ad_id: String = _get_ad_id(adType);
+	if ad_id == "NA":
+		return;
+
+	_initAd(adType, ad_id);
+
 
 func _on_load_banner_pressed():
 	start_time = Time.get_ticks_msec();
-	print('set start time to ', start_time);
-	if _ad_view == null:
-		_create_ad_view()
+	if _ads.get(AdType.Banner) == null:
+		_load_ad(AdType.Banner);
 
 	var ad_request := AdRequest.new()
-	_ad_view.load_ad(ad_request)
-
-
-func destroy_ad_view() -> void:
-	if _ad_view:
-		_ad_view.destroy()
-		_ad_view = null
+	_ads[AdType.Banner].load_ad(ad_request)
 
 
 var MIN_AD_TIME_SECONDS: int = 60;

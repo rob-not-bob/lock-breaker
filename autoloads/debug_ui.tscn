@@ -1,0 +1,41 @@
+[gd_scene load_steps=2 format=3 uid="uid://yyu2uwc85j40"]
+
+[ext_resource type="Script" path="res://autoloads/DebugUI.gd" id="1_qk3xr"]
+
+[node name="DebugUI" type="CanvasLayer"]
+layer = 128
+script = ExtResource("1_qk3xr")
+
+[node name="bg" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -1251.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.513726)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -1246.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="DebugText" type="RichTextLabel" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 1, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/line_separation = 5
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/normal_font_size = 30
+text = "Hello
+world
+"
+fit_content = true
+scroll_following = true
