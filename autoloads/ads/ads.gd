@@ -27,7 +27,6 @@ func _ready():
 
 	rewarded_interstitial_ad_load_callback.on_ad_loaded = func(rewarded_interstitial_ad : RewardedInterstitialAd) -> void:
 			DebugUI.log("rewarded interstitial ad loaded" + str(rewarded_interstitial_ad._uid))
-			print("rewarded interstitial ad loaded" + str(rewarded_interstitial_ad._uid))
 			_ads[AdType.RewardedInterstitial] = rewarded_interstitial_ad;
 
 	rewarded_interstitial_ad_fullscreen_callback.on_ad_dismissed_full_screen_content = func() -> void:
@@ -49,14 +48,10 @@ func load(adType: AdType) -> void:
 	if _ads.get(adType):
 		_destroy_ad(adType);
 	
-	print(JSON.stringify(adConfig.ADS));
 	var ad_id: String = _get_ad_id(adType);
 	if ad_id == "NA":
-		DebugUI.log("No ad id for ad type %s" % adType)
-		print("No ad id for ad type %s" % adType)
 		return;
 
-	print('init ad');
 	DebugUI.log('init_ad')
 	print(adConfig.ADS);
 	_init_ad(adType, ad_id);

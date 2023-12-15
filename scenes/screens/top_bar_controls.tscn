@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://jwf0odqoliic"]
+
+[ext_resource type="PackedScene" uid="uid://6a4dfgetmuf0" path="res://scenes/screens/mute_button.tscn" id="1_vpgku"]
+[ext_resource type="PackedScene" uid="uid://c6bhjysaijkma" path="res://scenes/screens/rate_app_button.tscn" id="2_7yi76"]
+
+[node name="TopBar" type="HBoxContainer"]
+size_flags_vertical = 0
+
+[node name="MuteButton" parent="." instance=ExtResource("1_vpgku")]
+layout_mode = 2
+
+[node name="spacer" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RateAppButton" parent="." instance=ExtResource("2_7yi76")]
+layout_mode = 2

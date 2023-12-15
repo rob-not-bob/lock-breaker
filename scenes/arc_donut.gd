@@ -26,7 +26,7 @@ func _ready():
 	inner_radius = outer_radius * inner_to_outer_ratio;
 	_init_arcs();
 
-	EventBus.theme_set.connect(func(theme) -> void:
+	Themes.theme_set.connect(func(theme) -> void:
 		arc_colors.clear();
 		arc_colors.append_array(theme.donut.arcs);
 		bg_color = theme.donut.bg;

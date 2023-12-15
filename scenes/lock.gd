@@ -13,7 +13,7 @@ extends Node2D
 		reverse = _reverse;
 
 func _ready():
-	EventBus.theme_set.connect(func(theme) -> void:
+	Themes.theme_set.connect(func(theme) -> void:
 		$shackle.color = theme.shackle;
 		$shackle.queue_redraw();
 	);

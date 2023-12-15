@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://c0g4kiq87bjnv"]
+[gd_scene load_steps=5 format=3 uid="uid://c0g4kiq87bjnv"]
 
 [ext_resource type="Script" path="res://scenes/screens/start_screen.gd" id="1_osqaq"]
 [ext_resource type="PackedScene" uid="uid://dcj45inn52d1x" path="res://ui_screen.tscn" id="2_gn8im"]
 [ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="2_j0f74"]
-[ext_resource type="PackedScene" uid="uid://c6bhjysaijkma" path="res://scenes/screens/rate_app_button.tscn" id="4_rpm64"]
-[ext_resource type="PackedScene" uid="uid://6a4dfgetmuf0" path="res://scenes/screens/mute_button.tscn" id="4_yr3ir"]
+[ext_resource type="PackedScene" uid="uid://jwf0odqoliic" path="res://scenes/screens/top_bar_controls.tscn" id="4_pvm3e"]
 
 [node name="start_screen" type="Control"]
 layout_mode = 3
@@ -45,18 +44,7 @@ layout_mode = 2
 theme = ExtResource("2_j0f74")
 text = "Credits"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="screen/MarginContainer" index="1"]
-layout_mode = 2
-size_flags_vertical = 0
-
-[node name="MuteButton" parent="screen/MarginContainer/HBoxContainer" instance=ExtResource("4_yr3ir")]
-layout_mode = 2
-
-[node name="spacer" type="Control" parent="screen/MarginContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="RateAppButton" parent="screen/MarginContainer/HBoxContainer" instance=ExtResource("4_rpm64")]
+[node name="TopBar" parent="screen/MarginContainer" index="1" instance=ExtResource("4_pvm3e")]
 layout_mode = 2
 
 [connection signal="button_up" from="screen/MarginContainer/VBoxContainer/Start" to="." method="_on_start_button_up"]

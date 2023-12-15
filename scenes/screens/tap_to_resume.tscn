@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://df30uux0ypcpo"]
+
+[ext_resource type="PackedScene" uid="uid://dcj45inn52d1x" path="res://ui_screen.tscn" id="1_q3c5l"]
+[ext_resource type="Script" path="res://scenes/screens/tap_to_resume.gd" id="1_qk7yj"]
+[ext_resource type="PackedScene" uid="uid://jwf0odqoliic" path="res://scenes/screens/top_bar_controls.tscn" id="3_hejld"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_81i5g"]
+
+[node name="TapToResume" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qk7yj")
+
+[node name="screen" parent="." instance=ExtResource("1_q3c5l")]
+layout_mode = 1
+
+[node name="TapToResumeLabel" type="Label" parent="screen/MarginContainer" index="0"]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+text = "Tap To
+Resume"
+horizontal_alignment = 1
+
+[node name="TapToResumeButton" type="TextureButton" parent="screen"]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_normal = SubResource("PlaceholderTexture2D_81i5g")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="TopBar" parent="screen" instance=ExtResource("3_hejld")]
+layout_mode = 2
+offset_left = 35.0
+offset_top = 35.0
+offset_right = 1144.0
+offset_bottom = 138.0
+
+[connection signal="pressed" from="screen/TapToResumeButton" to="." method="_on_tap_to_resume_button_pressed"]
+
+[editable path="screen"]

@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bdlpgtcpg032n"]
+[gd_scene load_steps=7 format=3 uid="uid://bdlpgtcpg032n"]
 
 [ext_resource type="Script" path="res://autoloads/screen_manager.gd" id="1_d1q6t"]
 [ext_resource type="PackedScene" uid="uid://c0g4kiq87bjnv" path="res://scenes/screens/start_screen.tscn" id="2_i6jxd"]
 [ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="3_t28xw"]
 [ext_resource type="PackedScene" uid="uid://bdhrkiy3lgcxv" path="res://scenes/screens/game_over_screen.tscn" id="4_ght7e"]
 [ext_resource type="PackedScene" uid="uid://caqopysoe54od" path="res://scenes/screens/credits.tscn" id="5_1xe6c"]
+[ext_resource type="PackedScene" uid="uid://df30uux0ypcpo" path="res://scenes/screens/tap_to_resume.tscn" id="6_vcok0"]
 
 [node name="ScreenManager" type="CanvasLayer"]
 layer = 2
@@ -20,3 +21,6 @@ theme = ExtResource("3_t28xw")
 [node name="credits" parent="." instance=ExtResource("5_1xe6c")]
 visible = false
 theme = ExtResource("3_t28xw")
+
+[node name="TapToResume" parent="." instance=ExtResource("6_vcok0")]
+visible = false

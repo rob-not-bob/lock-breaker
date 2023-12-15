@@ -13,6 +13,7 @@ extends Node
 	set(speed):
 		lock_speed = min(speed, max_lock_speed);
 		indicator.rotation_speed = lock_speed;
+@export var lives: int = 1;
 
 var score: int = 0:
 	set(new_score):
@@ -27,12 +28,29 @@ var score: int = 0:
 
 
 func _ready():
-	gameController.missed_arcs.connect(_lose);
+	gameController.missed_arcs.connect(func():
+		lives -= 1;
+		if lives <= 0:
+			_lose();
+	);
 	gameController.selected_arc.connect(func(arc_name):
 		_update_score(arc_name);
 		_scale_difficulty();
 		_choose_lock_angle();
-	)
+	);
+
+	Ads.on_reward_failed_to_earn.connect(func():
+		DebugUI.log("Reward Failed to Earn");
+		ScreenManager.switch_to(ScreenManager.Screens.TryAgain);
+		Ads.load(Ads.AdType.RewardedInterstitial);
+	);
+
+	Ads.on_reward_earned.connect(func(type: String, amount: int):
+		DebugUI.log("Reward Earned %s %s" % [type, amount]);
+		lives += 1;
+		ScreenManager.switch_to(ScreenManager.Screens.TapToResume);
+		Ads.load(Ads.AdType.RewardedInterstitial);
+	);
 
 
 func start() -> void:
@@ -45,12 +63,15 @@ func init() -> void:
 	_choose_lock_angle();
 
 
-func restart(with_extra_life: bool) -> void:
-	if with_extra_life:
+func restart() -> void:
+	if lives > 0:
 		indicator.direction = previous_direction;
 	else:
+		Themes.get_random_theme();
+		lives = 1;
 		score = 0;
 		indicator.direction = T.Direction.CLOCKWISE;
+
 	_choose_lock_angle();
 
 
