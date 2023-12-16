@@ -70,6 +70,7 @@ func restart() -> void:
 		Themes.get_random_theme();
 		lives = 1;
 		score = 0;
+		_scale_difficulty();
 		indicator.direction = T.Direction.CLOCKWISE;
 
 	_choose_lock_angle();
@@ -84,6 +85,7 @@ func _update_score(arc_name: String) -> void:
 
 
 func _get_point_value(arc_name: String) -> int:
+	indicator.emit();
 	match arc_name:
 		'red':
 			EventBus.crit.emit();

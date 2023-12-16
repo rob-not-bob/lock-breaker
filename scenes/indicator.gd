@@ -22,3 +22,8 @@ func _set_sizes(track_width: float):
 func _physics_process(delta):
 	rotation += rotation_speed * direction * delta;
 	position = _center + _radius * Vector2.from_angle(rotation);
+
+func emit():
+	$particles.emitting = true;
+	await get_tree().create_timer(0.05).timeout;
+	$particles.emitting = false;
