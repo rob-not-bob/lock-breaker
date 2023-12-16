@@ -4,8 +4,8 @@ func _ready():
 	$GameController.init();
 	$EndlessMode.init();
 
-	Themes.get_random_theme();
 	Themes.theme_set.connect(set_theme)
+	Themes.get_random_theme();
 
 	ScreenManager.switch_to(ScreenManager.Screens.Start);
 	ScreenManager.start.connect(_start_game);
@@ -17,7 +17,7 @@ func _ready():
 
 func set_theme(theme: Dictionary) -> void:
 	$UI/GameUI/bg.color = theme.bg;
-	%Score.modulate = theme.countdown;
+	%Score.add_theme_color_override("font_color", theme.countdown);
 
 
 func _start_game():

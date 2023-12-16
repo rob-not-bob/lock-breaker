@@ -8,6 +8,11 @@ class_name ArcDonut;
 @export_range(0, 1000) var outer_radius: float = 294 * 3.5;
 @export_color_no_alpha var bg_color: Color = Color.html("#0A1719");
 
+@export_category("Outline")
+@export var outline_thickness: float = 3.0;
+@export var outline_color: Color;
+var outline: Arc;
+
 @export_category("Arcs")
 @export_range(0, 360) var start_angle: float = 0:
 	set(angle):
@@ -51,6 +56,18 @@ func _draw():
 		if not reverse:
 			arc_start += arc.angle;
 
+	# Draw outline
+	var fudge := 1.0;
+	_draw_arc(0.0,
+		outline,
+		Vector2(outer_radius - fudge, outer_radius + outline_thickness)
+	);
+
+	_draw_arc(0.0,
+		outline,
+		Vector2(inner_radius - outline_thickness, inner_radius + fudge)
+	);
+
 
 ## Returns the name of the arc at _deg
 func get_arc_name_at(_deg: float):
@@ -84,7 +101,7 @@ func get_arc_name_at(_deg: float):
 	return null;
 
 
-func _draw_arc(from_angle: float, arc: Arc):
+func _draw_arc(from_angle: float, arc: Arc, inner_outer_radius: Vector2 = Vector2(inner_radius, outer_radius)):
 	var arc_points := PackedVector2Array()
 	var to_angle := from_angle + arc.angle;
 
@@ -94,16 +111,18 @@ func _draw_arc(from_angle: float, arc: Arc):
 		arc_points.push_back(Vector2.from_angle(angle) * radius);
 
 	for i in range(number_of_points + 1):
-		draw_arc_point.call(i, outer_radius);
+		draw_arc_point.call(i, inner_outer_radius.y);
 
 	for i in range(number_of_points, -1, -1):
-		draw_arc_point.call(i, inner_radius);
+		draw_arc_point.call(i, inner_outer_radius.x);
 
 	draw_colored_polygon(arc_points, arc.color);
 
 
 var _sum: float = 0.0;
 func _init_arcs() -> void:
+	outline = Arc.new("outline", outline_color, 359.99);
+
 	_sum = 0;
 	for i in range(arc_names.size()):
 		arcs.push_back(Arc.new(arc_names[i], arc_colors[i], arc_angles[i]));

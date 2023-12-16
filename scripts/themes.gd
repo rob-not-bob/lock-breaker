@@ -21,7 +21,7 @@ var default = {
 	"bg": Color.html("#197278"),
 	"shackle": Color.html("#0E2A2B"),
 	"indicator": Color.html("#FFFFFF"),
-	"countdown": Color.html("#FFFFFF"),
+	"countdown": Color.html("#BAD4D6"),
 	"donut": {
 		"bg": Color.html("#0A1719"),
 		"arcs": [
@@ -34,9 +34,9 @@ var default = {
 
 var yellow = {
 	"bg": Color.html("#C17E00"),
-	"shackle": Color.html("#000000B3"),
+	"shackle": Color.html("#1D2216"),
 	"indicator": Color.html("#FFFFFF"),
-	"countdown": Color.html("#000000B3"),
+	"countdown": Color.html("#3A2600"),
 	"donut": {
 		"bg": Color.html("#0A1719"),
 		"arcs": [
@@ -49,9 +49,9 @@ var yellow = {
 
 var red = {
 	"bg": Color.html("#772E25"),
-	"shackle": Color.html("#000000B3"),
+	"shackle": Color.html("#31201D"),
 	"indicator": Color.html("#FFFFFF"),
-	"countdown": Color.html("#FFFFFFEE"),
+	"countdown": Color.html("#D6C0BD"),
 	"donut": {
 		"bg": Color.html("#0A1719"),
 		"arcs": [
@@ -63,10 +63,10 @@ var red = {
 };
 
 var blue = {
-	"bg": Color.html("#16566F"),
-	"shackle": Color.html("#000000B3"),
+	"bg": Color.html("#124559"),
+	"shackle": Color.html("#0B1C1F"),
 	"indicator": Color.html("#FFFFFF"),
-	"countdown": Color.html("#FFFFFFEE"),
+	"countdown": Color.html("#B7C7CD"),
 	"donut": {
 		"bg": Color.html("#0A1719"),
 		"arcs": [
