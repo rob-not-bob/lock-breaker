@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cfxsdxfsx0y1d"]
+[gd_scene load_steps=25 format=3 uid="uid://cfxsdxfsx0y1d"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_1yv36"]
 [ext_resource type="PackedScene" uid="uid://dxo2ec4gcr203" path="res://scenes/lock.tscn" id="1_ws75f"]
@@ -107,6 +107,21 @@ shader_parameter/SHAKE_SPEED = 32.0
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_0c3ni"]
 
+[sub_resource type="Environment" id="Environment_h2ij2"]
+background_mode = 3
+glow_enabled = true
+glow_levels/3 = 0.0
+glow_levels/4 = 0.75
+glow_levels/5 = 0.0
+glow_intensity = 8.0
+glow_strength = 1.14
+glow_blend_mode = 1
+glow_hdr_threshold = 1.79
+glow_hdr_scale = 3.71
+glow_hdr_luminance_cap = 256.0
+adjustment_enabled = true
+adjustment_brightness = 0.5
+
 [node name="LockBreaker" type="Node2D"]
 script = ExtResource("1_1yv36")
 metadata/_edit_vertical_guides_ = [589.0]
@@ -157,7 +172,7 @@ layout_mode = 2
 disable_3d = true
 transparent_bg = true
 handle_input_locally = false
-msaa_2d = 1
+use_hdr_2d = true
 size = Vector2i(1176, 2142)
 render_target_update_mode = 4
 
@@ -176,6 +191,7 @@ offset_top = 1064.0
 offset_right = 1082.0
 offset_bottom = 1304.0
 theme = ExtResource("6_0eh8q")
+theme_override_colors/font_color = Color(0.729412, 0.831373, 0.839216, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.25098)
 theme_override_constants/shadow_offset_x = -10
 theme_override_constants/shadow_offset_y = 15
@@ -255,5 +271,8 @@ volume_db = -16.0
 script = ExtResource("3_6yysx")
 lowest_pitch = 0.75
 highest_pitch = 1.15
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_h2ij2")
 
 [connection signal="pressed" from="UI/StaticGameUI/InvertDirectionButton" to="UI/StaticGameUI/InvertDirectionButton" method="_on_pressed"]
