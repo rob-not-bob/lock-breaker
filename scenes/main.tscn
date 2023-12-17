@@ -109,7 +109,6 @@ shader_parameter/SHAKE_SPEED = 32.0
 
 [sub_resource type="Environment" id="Environment_h2ij2"]
 background_mode = 3
-glow_enabled = true
 glow_levels/3 = 0.0
 glow_levels/4 = 0.75
 glow_levels/5 = 0.0

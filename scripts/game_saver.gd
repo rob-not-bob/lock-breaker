@@ -10,8 +10,9 @@ func _ready() -> void:
 
 
 func save_game() -> void:
-	var save_file = FileAccess.open(_save_file_location, FileAccess.WRITE);
-	var game_state_string = JSON.stringify(game_state);
+	var save_file: FileAccess = FileAccess.open(_save_file_location, FileAccess.WRITE);
+	var game_state_string: String = JSON.stringify(game_state);
+	print_debug("Saving game %s" % game_state_string);
 	save_file.store_string(game_state_string);
 
 
@@ -20,16 +21,18 @@ func load_game() -> Dictionary:
 		print_debug("No save file")
 		return {};
 
-	var save_file = FileAccess.open(_save_file_location, FileAccess.READ);
-	var game_state_json_string = save_file.get_as_text();
+	var save_file: FileAccess = FileAccess.open(_save_file_location, FileAccess.READ);
+	var game_state_json_string: String = save_file.get_as_text();
+	print("save game text %s" % game_state_json_string);
 
-	var saved_game_state = JSON.parse_string(game_state_json_string);
+	var saved_game_state: Variant = JSON.parse_string(game_state_json_string);
 	if not saved_game_state:
 		print_debug("Error reading game state");
+		game_loaded.emit({});
 		return {};
 
-	print('game loaded', game_state)
 	game_state = saved_game_state;
-	game_loaded.emit(game_state);
+	print('game loaded %s' % game_state)
+	game_loaded.emit(saved_game_state);
 
 	return game_state;
