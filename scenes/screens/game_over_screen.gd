@@ -4,10 +4,6 @@ signal try_again_clicked();
 
 
 func _ready():
-	GameSaver.game_loaded.connect(func(game_state):
-		%BestScore.text = "Best Score: " + str(game_state.get("best_score") or 1);
-	);
-
 	EventBus.lost.connect(func(score):
 		%Score.text = "Score: " + str(score);
 	);
@@ -33,3 +29,7 @@ func _on_extra_life_try_again():
 			Ads.on_reward_failed_to_earn.emit();
 
 	%TryAgainExtraLife.hide();
+
+
+func _on_view_leaderboard_button_up():
+	LeaderboardsClient.show_all_leaderboards();

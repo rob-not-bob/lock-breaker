@@ -70,10 +70,22 @@ layout_mode = 2
 theme = ExtResource("2_bnhkj")
 text = "Try Again"
 
+[node name="Spacer" type="Control" parent="screen/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 73)
+layout_mode = 2
+
+[node name="ViewLeaderboard" type="Button" parent="screen/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+theme = ExtResource("2_bnhkj")
+text = "View Leaderboard"
+
 [node name="TopBar" parent="screen/MarginContainer" index="1" instance=ExtResource("4_55afo")]
 layout_mode = 2
 
 [connection signal="button_up" from="screen/MarginContainer/VBoxContainer/TryAgainExtraLife" to="." method="_on_extra_life_try_again"]
 [connection signal="button_up" from="screen/MarginContainer/VBoxContainer/TryAgain" to="." method="_on_try_again_button_up"]
+[connection signal="button_up" from="screen/MarginContainer/VBoxContainer/ViewLeaderboard" to="." method="_on_view_leaderboard_button_up"]
 
 [editable path="screen"]

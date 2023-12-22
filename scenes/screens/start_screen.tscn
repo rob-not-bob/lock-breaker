@@ -52,10 +52,18 @@ layout_mode = 2
 theme = ExtResource("2_j0f74")
 text = "Credits"
 
+[node name="ViewLeaderboard" type="Button" parent="screen/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+theme = ExtResource("2_j0f74")
+text = "View Leaderboard"
+
 [node name="TopBar" parent="screen/MarginContainer" index="1" instance=ExtResource("4_pvm3e")]
 layout_mode = 2
 
 [connection signal="button_up" from="screen/MarginContainer/VBoxContainer/Start" to="." method="_on_start_button_up"]
 [connection signal="button_up" from="screen/MarginContainer/VBoxContainer/Credits" to="." method="_on_credits_button_up"]
+[connection signal="button_up" from="screen/MarginContainer/VBoxContainer/ViewLeaderboard" to="." method="_on_view_leaderboard_button_up"]
 
 [editable path="screen"]
