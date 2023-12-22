@@ -14,6 +14,7 @@ func _process(_delta) -> void:
 
 
 func init() -> void:
+	previous_arc = null;
 	indicator.initialize(
 		lock.global_position,
 		lock.get_orbit_radius(),
@@ -74,5 +75,5 @@ func _check_for_passive_loss() -> void:
 		_missed_arcs();
 
 func _missed_arcs():
-	previous_direction = indicator.direction as T.Direction;
+	previous_arc = null;
 	missed_arcs.emit();

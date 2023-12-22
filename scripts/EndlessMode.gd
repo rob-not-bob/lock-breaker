@@ -59,6 +59,8 @@ func start() -> void:
 
 func init() -> void:
 	score = 0;
+	lives = 1;
+	_scale_difficulty();
 	indicator.direction = T.Direction.NONE;
 	_choose_lock_angle();
 
@@ -68,8 +70,8 @@ func restart() -> void:
 		indicator.direction = previous_direction;
 	else:
 		Themes.get_random_theme();
-		lives = 1;
 		score = 0;
+		lives = 1;
 		_scale_difficulty();
 		indicator.direction = T.Direction.CLOCKWISE;
 
