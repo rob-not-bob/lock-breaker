@@ -1,7 +1,16 @@
-extends Control
+extends Screen
 
-signal start_button_clicked;
-signal credit_button_clicked;
+signal start_button_clicked();
+signal credit_button_clicked();
+
+func _ready():
+	%ViewLeaderboard.hide();
+
+func on_screen_enter() -> void:
+	if GlobalState.is_signed_in_google_play:
+		%ViewLeaderboard.show();
+	else:
+		%ViewLeaderboard.hide();
 
 func _on_start_button_up():
 	start_button_clicked.emit();

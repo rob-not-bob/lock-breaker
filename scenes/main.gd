@@ -7,9 +7,10 @@ func _ready():
 	Themes.theme_set.connect(set_theme)
 	Themes.get_random_theme();
 
-	ScreenManager.switch_to(ScreenManager.Screens.Start);
+	ScreenManager.switch_to("Start");
 	ScreenManager.start.connect(_start_game);
 	ScreenManager.restart.connect(func():
+		Ads.load(Ads.AdType.RewardedInterstitial);
 		$GameController.restart();
 		$EndlessMode.restart();
 	);

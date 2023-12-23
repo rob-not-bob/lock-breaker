@@ -7,7 +7,7 @@ func _ready():
 	EventBus.lost.connect(func(_score):
 		play("screen_shake");
 		await animation_finished;
-		ScreenManager.switch_to(ScreenManager.Screens.TryAgain);
+		ScreenManager.switch_to("TryAgain");
 	);
 
 	EventBus.mute.connect(func(is_muted: bool):

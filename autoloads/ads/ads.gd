@@ -22,8 +22,7 @@ func _ready():
 	#region Rewarded interstitial callbacks
 	rewarded_interstitial_ad_load_callback.on_ad_failed_to_load = func(adError : LoadAdError) -> void:
 		DebugUI.log("ad failed to load: %s" % adError.message);
-		on_reward_failed_to_earn.emit();
-		print(adError.message)
+		_destroy_ad(AdType.RewardedInterstitial);
 
 	rewarded_interstitial_ad_load_callback.on_ad_loaded = func(rewarded_interstitial_ad : RewardedInterstitialAd) -> void:
 			DebugUI.log("rewarded interstitial ad loaded" + str(rewarded_interstitial_ad._uid))
@@ -36,7 +35,7 @@ func _ready():
 
 	on_user_earned_reward_listener.on_user_earned_reward = func(reward: RewardedItem):
 		DebugUI.log("reward earned %s %s" % [reward.type, reward.amount])
-		_destroy_ad(Ads.AdType.RewardedInterstitial);
+		_destroy_ad(AdType.RewardedInterstitial);
 		on_reward_earned.emit(reward.type, reward.amount);
 	#endregion
 
@@ -45,6 +44,9 @@ func _ready():
 
 # Fully sets up ad of type adType to be shown
 func load(adType: AdType) -> void:
+	if not _can_load_ad(adType):
+		return;
+
 	if _ads.get(adType):
 		_destroy_ad(adType);
 	
@@ -53,18 +55,15 @@ func load(adType: AdType) -> void:
 		return;
 
 	DebugUI.log('init_ad')
-	print(adConfig.ADS);
 	_init_ad(adType, ad_id);
+	_set_ad_timeout(adType);
 
 
 func show(adType: AdType) -> void:
 	DebugUI.log("show called %s" % adType);
-	if _ads.get(adType) == null:
+	if not is_loaded(adType):
 		DebugUI.log(
-			'Error: Ad of type {adType} is has not yet been loaded. Call load_ad({adType}) before calling show_ad'.format({ adType: adType })
-		);
-		print(
-			'Error: Ad of type {adType} is has not yet been loaded. Call load_ad({adType}) before calling show_ad'.format({ adType: adType })
+			'Warn: Ad of type {adType} is has not yet been loaded. Call load_ad({adType}) before calling show_ad'.format({ adType: adType })
 		);
 		return;
 
@@ -74,6 +73,11 @@ func show(adType: AdType) -> void:
 		AdType.RewardedInterstitial:
 			DebugUI.log("showing reward intersititial");
 			_ads[adType].show(on_user_earned_reward_listener);
+
+
+# Returns if the ad is loaded or not
+func is_loaded(adType: AdType) -> bool:
+	return _ads.get(adType) != null;
 
 #endregion
 
@@ -111,5 +115,21 @@ func _init_ad(adType: AdType, adId: String) -> void:
 			_ads[adType] = AdView.new(adId, AdSize.BANNER, AdPosition.Values.BOTTOM);
 		AdType.RewardedInterstitial:
 			RewardedInterstitialAdLoader.new().load(adId, AdRequest.new(), rewarded_interstitial_ad_load_callback);
+
+
+var _timeouts = {};
+func _can_load_ad(adType: AdType) -> bool:
+	return not _timeouts.get(adType);
+
+
+func _set_ad_timeout(adType: AdType, on_timeout = null) -> void:
+	if not _timeouts.get(adType):
+		_timeouts[adType] = get_tree().create_timer(60).timeout;
+		_timeouts[adType].connect(func():
+			_timeouts[adType] = false;
+		);
+
+	if on_timeout is Callable:
+		_timeouts[adType].connect(on_timeout);
 
 #endregion

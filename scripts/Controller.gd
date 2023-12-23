@@ -4,7 +4,7 @@ extends Node
 @export var lock: Lock;
 @export var indicator: Indicator;
 
-signal missed_arcs;
+signal missed_arcs();
 signal selected_arc(arc_name: String);
 
 func _process(_delta) -> void:
@@ -26,6 +26,13 @@ func init() -> void:
 
 func restart() -> void:
 	previous_arc = null;
+
+	#var logs = PackedStringArray();
+	#logs.append("previous_arc: %s" % previous_arc);
+	#logs.append("i direction: %s" % indicator.direction);
+	#logs.append("i speed: %s" % indicator.rotation_speed);
+	#logs.append("i rotation: %s" % indicator.rotation);
+	#DebugUI.log("\n".join(logs));
 
 
 var paused := false;
@@ -54,7 +61,7 @@ func _handle_direction_change() -> void:
 	var arc_name = lock.get_arc_at(rad_to_deg(indicator.rotation));
 	indicator.direction *= -1;
 
-	printt("arc name", arc_name);
+	DebugUI.log("arc_name: %s" % arc_name);
 	if not arc_name:
 		_missed_arcs();
 	else:
@@ -72,6 +79,7 @@ func _check_for_passive_loss() -> void:
 	if not previous_arc and indicator_over_arc:
 		previous_arc = indicator_over_arc;
 	elif previous_arc and not indicator_over_arc:
+		DebugUI.log("Missed arc");
 		_missed_arcs();
 
 func _missed_arcs():

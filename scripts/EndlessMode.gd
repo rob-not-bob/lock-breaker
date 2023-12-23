@@ -29,11 +29,14 @@ var score: int = 0:
 
 func _ready():
 	gameController.missed_arcs.connect(func():
+		DebugUI.log("arc missed");
 		lives -= 1;
+		DebugUI.log("lives %s" % lives);
 		if lives <= 0:
 			_lose();
 	);
 	gameController.selected_arc.connect(func(arc_name):
+		DebugUI.log("arc selected: %s" % arc_name);
 		_update_score(arc_name);
 		_scale_difficulty();
 		_choose_lock_angle();
@@ -41,15 +44,14 @@ func _ready():
 
 	Ads.on_reward_failed_to_earn.connect(func():
 		DebugUI.log("Reward Failed to Earn");
-		ScreenManager.switch_to(ScreenManager.Screens.TryAgain);
-		Ads.load(Ads.AdType.RewardedInterstitial);
+		ScreenManager.switch_to("TryAgain");
 	);
 
 	Ads.on_reward_earned.connect(func(type: String, amount: int):
 		DebugUI.log("Reward Earned %s %s" % [type, amount]);
 		lives += 1;
-		ScreenManager.switch_to(ScreenManager.Screens.TapToResume);
-		Ads.load(Ads.AdType.RewardedInterstitial);
+		GlobalState.allow_extra_life = false;
+		ScreenManager.switch_to("TapToResume");
 	);
 
 
@@ -62,13 +64,25 @@ func init() -> void:
 	lives = 1;
 	_scale_difficulty();
 	indicator.direction = T.Direction.NONE;
+	GlobalState.allow_extra_life = true;
 	_choose_lock_angle();
+
+	var logs := PackedStringArray();
+	logs.append("score: %s" % score);
+	logs.append("lives: %s" % lives);
+	logs.append("lock angle: %s" % lock.angle);
+	logs.append("lock angle: %s" % lock.angle);
+	DebugUI.log("\n".join(logs));
 
 
 func restart() -> void:
 	if lives > 0:
+		DebugUI.log("Resuming game...");
 		indicator.direction = previous_direction;
 	else:
+		DebugUI.log("Starting new game...");
+		DebugUI.log("lives: %s" % lives);
+		GlobalState.allow_extra_life = true;
 		Themes.get_random_theme();
 		score = 0;
 		lives = 1;

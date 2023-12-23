@@ -11,14 +11,14 @@
 layer = 2
 script = ExtResource("1_d1q6t")
 
-[node name="StartScreen" parent="." instance=ExtResource("2_i6jxd")]
+[node name="Start" parent="." instance=ExtResource("2_i6jxd")]
 theme = ExtResource("3_t28xw")
 
 [node name="TryAgain" parent="." instance=ExtResource("4_ght7e")]
 visible = false
 theme = ExtResource("3_t28xw")
 
-[node name="credits" parent="." instance=ExtResource("5_1xe6c")]
+[node name="Credits" parent="." instance=ExtResource("5_1xe6c")]
 visible = false
 theme = ExtResource("3_t28xw")
 

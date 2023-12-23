@@ -1,9 +1,25 @@
-extends Control
+extends Screen
 
 signal try_again_clicked();
 
 
+func on_screen_enter() -> void:
+	if GlobalState.is_signed_in_google_play:
+		%ViewLeaderboard.show();
+	else:
+		%ViewLeaderboard.hide();
+
+	if GlobalState.allow_extra_life and Ads.is_loaded(Ads.AdType.RewardedInterstitial):
+		%TryAgainExtraLife.show();
+	else:
+		%TryAgainExtraLife.hide();
+
+
 func _ready():
+	_connect_scores();
+
+
+func _connect_scores() -> void:
 	EventBus.lost.connect(func(score):
 		%Score.text = "Score: " + str(score);
 	);
@@ -17,6 +33,7 @@ func _on_try_again_button_up():
 	try_again_clicked.emit();
 	DebugUI.log("Try again clicked");
 	%TryAgainExtraLife.show();
+
 
 func _on_extra_life_try_again():
 	DebugUI.log("Extra life try again");

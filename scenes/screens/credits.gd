@@ -1,4 +1,4 @@
-extends Control
+extends Screen
 
 signal on_back_clicked;
 

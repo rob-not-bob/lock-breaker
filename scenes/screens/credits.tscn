@@ -14,16 +14,25 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_s85r1")
 
-[node name="SafeMarginContainer" parent="." instance=ExtResource("2_38igp")]
-layout_mode = 1
+[node name="screen" parent="." instance=ExtResource("2_tlkf0")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1179.0
+offset_bottom = 2556.0
 
-[node name="screen" parent="SafeMarginContainer" instance=ExtResource("2_tlkf0")]
+[node name="bg" parent="screen" index="0"]
+offset_right = 153.0
+offset_bottom = 202.0
+
+[node name="SafeMarginContainer" parent="screen/MarginContainer" index="0" instance=ExtResource("2_38igp")]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SafeMarginContainer/screen/MarginContainer" index="0"]
+[node name="VBoxContainer" type="VBoxContainer" parent="screen/MarginContainer/SafeMarginContainer"]
 layout_mode = 2
 
-[node name="Attribution" type="Label" parent="SafeMarginContainer/screen/MarginContainer/VBoxContainer"]
+[node name="Attribution" type="Label" parent="screen/MarginContainer/SafeMarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 700)
 layout_mode = 2
 size_flags_vertical = 3
@@ -38,12 +47,12 @@ https://creativecommons.org/licenses/by/3.0/
 "
 autowrap_mode = 1
 
-[node name="Back" type="Button" parent="SafeMarginContainer/screen/MarginContainer/VBoxContainer"]
+[node name="Back" type="Button" parent="screen/MarginContainer/SafeMarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 theme = ExtResource("1_1twrc")
 text = "Back"
 
-[connection signal="button_up" from="SafeMarginContainer/screen/MarginContainer/VBoxContainer/Back" to="." method="_on_back_button_up"]
+[connection signal="button_up" from="screen/MarginContainer/SafeMarginContainer/VBoxContainer/Back" to="." method="_on_back_button_up"]
 
-[editable path="SafeMarginContainer/screen"]
+[editable path="screen"]
