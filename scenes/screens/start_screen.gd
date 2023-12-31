@@ -22,3 +22,4 @@ func _on_credits_button_up():
 
 func _on_view_leaderboard_button_up():
 	LeaderboardsClient.show_all_leaderboards();
+	

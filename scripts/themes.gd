@@ -1,6 +1,7 @@
 extends Node
 
 var current_theme_index: int = 0;
+var current_theme = default;
 
 signal theme_set(theme: Dictionary);
 
@@ -12,10 +13,10 @@ func get_random_theme() -> Dictionary:
 
 	current_theme_index = index;
 
-	var theme: Dictionary = themes[current_theme_index];
-	theme_set.emit(theme);
+	current_theme = themes[current_theme_index];
+	theme_set.emit(current_theme);
 
-	return theme;
+	return current_theme;
 
 var default = {
 	"bg": Color.html("#197278"),

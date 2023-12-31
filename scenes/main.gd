@@ -3,6 +3,7 @@ extends Node2D
 func _ready():
 	$GameController.init();
 	$EndlessMode.init();
+	GlobalState.effects_ref = %effects;
 
 	Themes.theme_set.connect(set_theme)
 	Themes.get_random_theme();

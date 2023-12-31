@@ -8,3 +8,5 @@ func _ready() -> void:
 
 var is_signed_in_google_play := false;
 var allow_extra_life := true;
+
+var effects_ref: Node;

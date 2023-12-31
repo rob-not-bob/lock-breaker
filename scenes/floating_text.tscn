@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://blu2kmrjnjkli"]
+
+[ext_resource type="Script" path="res://scenes/floating_text.gd" id="1_k5et6"]
+
+[node name="FloatingText" type="Marker2D"]
+top_level = true
+scale = Vector2(0.7, 0.7)
+script = ExtResource("1_k5et6")
+
+[node name="Label" type="Label" parent="."]
+custom_minimum_size = Vector2(150, 25)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.568627)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = -4
+theme_override_constants/shadow_offset_y = 4
+theme_override_font_sizes/font_size = 56
+text = "+3"
+horizontal_alignment = 1
+vertical_alignment = 1

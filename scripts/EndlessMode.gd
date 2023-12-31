@@ -7,6 +7,8 @@ extends Node
 
 @export var min_spawn_distance: float = 60;
 
+@export var floating_text_scene: PackedScene;
+
 @export_group("Lock Speed")
 @export var max_lock_speed: float = 7.0;
 @export var lock_speed: float = 2.0:
@@ -15,6 +17,7 @@ extends Node
 		indicator.rotation_speed = lock_speed;
 @export var lives: int = 1;
 
+var true_score: int = 0;
 var score: int = 0:
 	set(new_score):
 		score = new_score;
@@ -38,6 +41,7 @@ func _ready():
 	gameController.selected_arc.connect(func(arc_name):
 		DebugUI.log("arc selected: %s" % arc_name);
 		_update_score(arc_name);
+		_spawn_point_text(arc_name);
 		_scale_difficulty();
 		_choose_lock_angle();
 	);
@@ -61,6 +65,7 @@ func start() -> void:
 
 func init() -> void:
 	score = 0;
+	true_score = 0;
 	lives = 1;
 	_scale_difficulty();
 	indicator.direction = T.Direction.NONE;
@@ -85,6 +90,7 @@ func restart() -> void:
 		GlobalState.allow_extra_life = true;
 		Themes.get_random_theme();
 		score = 0;
+		true_score = 0;
 		lives = 1;
 		_scale_difficulty();
 		indicator.direction = T.Direction.CLOCKWISE;
@@ -93,11 +99,30 @@ func restart() -> void:
 
 
 func _scale_difficulty() -> void:
-	lock_speed = 2.0 + 0.125 * int(score / 5.0);
+	lock_speed = 2.0 + 0.125 * int(true_score / 5.0);
 
 
 func _update_score(arc_name: String) -> void:
-	score += _get_point_value(arc_name);
+	var tween := create_tween()\
+		.set_ease(Tween.EASE_OUT);
+	var points: int = _get_point_value(arc_name);
+	true_score += points;
+	tween.tween_property(self, "score", true_score, 0.25).set_delay(0.25);
+
+
+func _spawn_point_text(arc_name: String):
+	var points: int = _get_point_value(arc_name);
+	var font_size: int = 56;
+	if points == 3:
+		font_size = 115;
+	if points == 2:
+		font_size = 80;
+	var floating_text = floating_text_scene.instantiate();
+	floating_text.position = indicator.position;
+	floating_text.text = '+%s' % points;
+	floating_text.size = font_size;
+	GlobalState.effects_ref.add_child(floating_text);
+
 
 
 func _get_point_value(arc_name: String) -> int:
@@ -118,7 +143,7 @@ var previous_direction: T.Direction;
 func _lose() -> void:
 	previous_direction = indicator.direction as T.Direction;
 	indicator.direction = T.Direction.NONE;
-	EventBus.lost.emit(score);
+	EventBus.lost.emit(true_score);
 
 
 func _choose_lock_angle() -> void:

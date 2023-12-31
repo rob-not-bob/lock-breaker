@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://cfxsdxfsx0y1d"]
+[gd_scene load_steps=26 format=3 uid="uid://cfxsdxfsx0y1d"]
 
 [ext_resource type="Script" path="res://scenes/main.gd" id="1_1yv36"]
 [ext_resource type="PackedScene" uid="uid://dxo2ec4gcr203" path="res://scenes/lock.tscn" id="1_ws75f"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scenes/RandPitch.gd" id="3_6yysx"]
 [ext_resource type="Script" path="res://scripts/EndlessMode.gd" id="3_iwdsb"]
 [ext_resource type="Script" path="res://scripts/Controller.gd" id="4_g8gkn"]
+[ext_resource type="PackedScene" uid="uid://blu2kmrjnjkli" path="res://scenes/floating_text.tscn" id="4_x3nb6"]
 [ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="6_0eh8q"]
 [ext_resource type="PackedScene" uid="uid://bpy1hd0buwsk4" path="res://scenes/indicator.tscn" id="6_wb7sh"]
 [ext_resource type="Script" path="res://scenes/shaderAnimations.gd" id="7_hdrqy"]
@@ -136,6 +137,7 @@ lock = NodePath("../UI/GameUI/CenterContainer/SubViewportContainer/SubViewport/l
 indicator = NodePath("../UI/GameUI/CenterContainer/SubViewportContainer/SubViewport/indicator")
 score_label = NodePath("../UI/GameUI/CenterContainer/SubViewportContainer/SubViewport/Score")
 gameController = NodePath("../GameController")
+floating_text_scene = ExtResource("4_x3nb6")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -198,6 +200,9 @@ theme_override_font_sizes/font_size = 240
 text = "99"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="effects" type="Node" parent="UI/GameUI/CenterContainer/SubViewportContainer/SubViewport"]
+unique_name_in_owner = true
 
 [node name="shaders" type="Control" parent="UI/GameUI"]
 layout_mode = 1
