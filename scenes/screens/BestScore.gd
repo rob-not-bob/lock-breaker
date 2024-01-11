@@ -17,7 +17,7 @@ func _ready():
 func _connect_game_save_state_best_score():
 	var set_best_score_gs = func(game_state: Dictionary):
 		var saved_best = game_state.get("best_score");
-		if saved_best > best_score:
+		if saved_best and saved_best > best_score:
 			best_score = saved_best;
 			EventBus.on_new_best_score.emit(best_score);
 
