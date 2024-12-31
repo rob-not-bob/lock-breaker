@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://scenes/RandPitch.gd" id="3_6yysx"]
 [ext_resource type="Script" path="res://scripts/EndlessMode.gd" id="3_iwdsb"]
 [ext_resource type="Script" path="res://scripts/Controller.gd" id="4_g8gkn"]
-[ext_resource type="PackedScene" uid="uid://blu2kmrjnjkli" path="res://scenes/floating_text.tscn" id="4_x3nb6"]
+[ext_resource type="PackedScene" path="res://scenes/floating_text.tscn" id="4_x3nb6"]
 [ext_resource type="Theme" uid="uid://7ufvk254irrw" path="res://ui_theme.tres" id="6_0eh8q"]
 [ext_resource type="PackedScene" uid="uid://bpy1hd0buwsk4" path="res://scenes/indicator.tscn" id="6_wb7sh"]
 [ext_resource type="Script" path="res://scenes/shaderAnimations.gd" id="7_hdrqy"]
