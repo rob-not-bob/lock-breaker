@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.godot.game"
     android:versionCode="1"
     android:versionName="1.0"
-    android:installLocation="auto">
+    android:installLocation="auto" >
 
     <supports-screens
         android:smallScreens="true"
@@ -24,7 +23,11 @@
         android:isGame="true"
         android:hasFragileUserData="false"
         android:requestLegacyExternalStorage="false"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning" >
+        <profileable
+            android:shell="true"
+            android:enabled="true"
+            tools:targetApi="29" />
 
         <!-- Records the version of the Godot editor used for building -->
         <meta-data
@@ -41,7 +44,7 @@
             android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|density|keyboard|navigation|screenLayout|uiMode"
             android:resizeableActivity="false"
-            tools:ignore="UnusedAttribute">
+            tools:ignore="UnusedAttribute" >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,10 +53,12 @@
             </intent-filter>
         </activity>
 
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3502216226418364~9827332675" />
-
+		<meta-data
+			android:name="com.google.android.gms.ads.APPLICATION_ID"
+			android:value="ca-app-pub-3502216226418364~9827332675" />
+    <meta-data
+      android:name="com.google.android.gms.games.APP_ID"
+      android:value="@string/game_services_project_id"/>
     </application>
 
 </manifest>

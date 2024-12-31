@@ -33,6 +33,7 @@ func _ready() -> void:
 	request_configuration.convert_to_dictionary()
 	MobileAds.set_request_configuration(request_configuration)
 	MobileAds.initialize(on_initialization_complete_listener)
+
 	
 func _on_initialization_complete(initialization_status : InitializationStatus) -> void:
 	print("MobileAds initialization complete")
@@ -60,7 +61,6 @@ func _on_initialization_complete(initialization_status : InitializationStatus) -
 
 func _on_get_initialization_status_pressed() -> void:
 	var initialization_status := MobileAds.get_initialization_status()
-	print('get init')
 	if initialization_status:
 		print_all_values(initialization_status)
 

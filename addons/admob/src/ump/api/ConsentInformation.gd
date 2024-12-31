@@ -50,11 +50,11 @@ func update(consent_request : ConsentRequestParameters,
 		_plugin.update(consent_request.convert_to_dictionary())
 		
 		_plugin.connect("on_consent_info_updated_success", func(): 
-			on_consent_info_updated_success.call()
-		)
+			on_consent_info_updated_success.call_deferred()
+		, CONNECT_ONE_SHOT)
 		_plugin.connect("on_consent_info_updated_failure", func(form_error_dictionary : Dictionary): 
-			on_consent_info_updated_failure.call(FormError.create(form_error_dictionary))
-		)
+			on_consent_info_updated_failure.call_deferred(FormError.create(form_error_dictionary))
+		, CONNECT_ONE_SHOT)
 
 func reset():
 	if _plugin:
